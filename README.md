@@ -25,7 +25,7 @@ Our prediction model combines two key components:
 
 These components are then integrated into machine learning models to predict stock prices and the ASPI.
 
-## Technologies Used
+## Technologies 
 
 *   Python
 *   Pandas
@@ -33,9 +33,6 @@ These components are then integrated into machine learning models to predict sto
 *   Scikit-learn
 *   BERT
 
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request.
 
 ## Team Members
 
