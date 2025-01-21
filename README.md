@@ -1,4 +1,4 @@
-Sentiment Analysis for the Colombo Stock Exchange (CSE)
+**Sentiment Analysis for the Colombo Stock Exchange (CSE)**
 
 Project Overview
 
