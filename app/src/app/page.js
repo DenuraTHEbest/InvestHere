@@ -1,41 +1,69 @@
-'use client';
+'use client'
+import { Line } from "react-chartjs-2";
+import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement } from "chart.js";
 
-import { useState } from 'react';
-import Link from 'next/link';
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
+
+const data = {
+  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+  datasets: [
+    {
+      label: "ASPI Index",
+      data: [6500, 6700, 6600, 6800, 7000, 6900, 7100],
+      borderColor: "#4CAF50",
+      backgroundColor: "rgba(76, 175, 80, 0.2)",
+      fill: true,
+    },
+  ],
+};
 
 export default function Home() {
-  const [search, setSearch] = useState('');
-
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
-      <header className="w-full max-w-4xl text-center py-6">
-        <h1 className="text-4xl font-bold text-gray-800">CSE Stock Analysis</h1>
-        <p className="text-gray-600 mt-2">Predict stock trends with sentiment analysis</p>
-      </header>
-      
-      <main className="w-full max-w-3xl bg-white shadow-md rounded-lg p-6">
-        <div className="mb-4">
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search stocks..."
-            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+    <div style={{ backgroundColor: '#121212', color: '#ffffff', minHeight: '100vh', padding: '20px' }}>
+      <nav style={{ display: 'flex', alignItems: 'center', padding: '10px', background: '#1e1e1e', borderRadius: '10px' }}>
+        <img src="/logo.png" alt="Logo" style={{ height: '40px', marginRight: '10px' }} />
+        <h1>InvestHERE</h1>
+      </nav>
+      <section style={{ textAlign: 'center', padding: '50px 20px', background: '#1e1e1e', borderRadius: '10px', margin: '20px 0' }}>
+        <h1 style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '10px' }}>Track the Market Like a Pro</h1>
+        <p style={{ fontSize: '1.2rem', color: '#bbb' }}>Stay updated with the best-performing stocks in real time.</p>
+      </section>
+      <main style={{ marginTop: '20px' }}>
+        <h1>Top Performing Companies</h1>
+        <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+          <div style={{ background: '#1e1e1e', padding: '20px', borderRadius: '10px', width: '300px', textAlign: 'center' }}>
+            <h3>Company A</h3>
+            <p>Stock Price: $250</p>
+            <p>Change: +5.2%</p>
+          </div>
+          <div style={{ background: '#1e1e1e', padding: '20px', borderRadius: '10px', width: '300px', textAlign: 'center' }}>
+            <h3>Company B</h3>
+            <p>Stock Price: $180</p>
+            <p>Change: +3.8%</p>
+          </div>
+          <div style={{ background: '#1e1e1e', padding: '20px', borderRadius: '10px', width: '300px', textAlign: 'center' }}>
+            <h3>Company C</h3>
+            <p>Stock Price: $320</p>
+            <p>Change: +6.1%</p>
+          </div>
+          <div style={{ background: '#1e1e1e', padding: '20px', borderRadius: '10px', width: '300px', textAlign: 'center' }}>
+            <h3>Company D</h3>
+            <p>Stock Price: $380</p>
+            <p>Change: +6.8%</p>
+          </div>
+          <div style={{ background: '#1e1e1e', padding: '20px', borderRadius: '10px', width: '300px', textAlign: 'center' }}>
+            <h3>Company E</h3>
+            <p>Stock Price: $170</p>
+            <p>Change: +8.1%</p>
+          </div>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Link href="/sentiment" className="bg-blue-500 text-white py-3 px-6 rounded-lg text-center hover:bg-blue-600 transition">
-            View Sentiment Analysis
-          </Link>
-          <Link href="/stocks" className="bg-green-500 text-white py-3 px-6 rounded-lg text-center hover:bg-green-600 transition">
-            View Stock Data
-          </Link>
-        </div>
+        <section style={{ marginTop: '40px', padding: '20px', background: '#1e1e1e', borderRadius: '10px', maxWidth: '500px',maxHeight: '500px', marginLeft: 'auto', marginRight: 'auto' }}>
+          <h2 style={{ textAlign: 'center' }}>ASPI Index Performance</h2>
+          <Line data={data} options={{ maintainAspectRatio: false }} width={400} height={300} />
+        </section>
       </main>
-      
-      <footer className="mt-6 text-gray-500">
-        <p>© 2025 CSE Prediction Project</p>
+      <footer style={{ textAlign: 'center', padding: '10px', background: '#1e1e1e', borderRadius: '10px', marginTop: '20px' }}>
+        <p>&copy; 2025 Stock Market. All rights reserved.</p>
       </footer>
     </div>
   );
