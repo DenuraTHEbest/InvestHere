@@ -1,3 +1,4 @@
+# %%
 # Import libraries
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trainer, TrainingArguments
 import pandas as pd
@@ -6,7 +7,7 @@ from sklearn.model_selection import train_test_split
 import os
 
 # Define model save path
-MODEL_SAVE_PATH = "/sentiment/models/sentiment_analyzer.py"
+MODEL_SAVE_PATH = "./sentiment_model"
 
 # Load tokenizer and model
 tokenizer = AutoTokenizer.from_pretrained("NLPC-UOM/SinBERT-large")
@@ -18,7 +19,7 @@ labeled_label_column = 'label'
 unlabeled_text_column = 'Description'
 
 # Load and preprocess labeled data
-labeled_data = pd.read_csv("/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/LabellingData/data/sinhala_news_sentiment.csv")
+labeled_data = pd.read_csv("/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/sentiment/Data/News_Data/News_Data_prePoroccess/sinhala_news_sentiment.csv")
 
 # Encode labels for training
 label_map = {label: idx for idx, label in enumerate(labeled_data[labeled_label_column].unique())}
@@ -88,7 +89,7 @@ tokenizer.save_pretrained(MODEL_SAVE_PATH)
 print(f"Model saved to {MODEL_SAVE_PATH}")
 
 # Load and preprocess the unlabeled dataset
-unlabeled_data = pd.read_csv("news_data.csv")
+unlabeled_data = pd.read_csv("/sentiment/Data/News_Data/News_Data_prePoroccess/news_data.csv")
 
 # Tokenize unlabeled data
 unlabeled_encodings = tokenizer(
@@ -127,5 +128,10 @@ reverse_label_map = {v: k for k, v in label_map.items()}
 unlabeled_data['predicted_label'] = [reverse_label_map[label.item()] for label in predicted_labels]
 
 # Save the predictions to a new CSV
-unlabeled_data.to_csv("/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/LabellingData/data/predictions.csv", index=False)
-print("Predictions saved to /Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/LabellingData/data/predictions.csv")
+unlabeled_data.to_csv("/sentiment/Data/News_Data/Predictions.csv", index=False)
+print("Predictions saved to predictions.csv")
+
+from transformers import AutoModelForSequenceClassification
+
+model.save_pretrained("./sentiment_model")  # Save in the current directory
+
