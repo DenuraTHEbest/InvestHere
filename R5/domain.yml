@@ -1,0 +1,37 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - stock_price
+  - aspi_price
+  - sentiment_analysis
+  - openai_chat
+
+entities:
+  - company
+
+slots:
+  company_symbol:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: company
+
+responses:
+  utter_greet:
+    - text: "Hello! How can I assist you with stock market insights today?"
+
+  utter_goodbye:
+    - text: "Goodbye! Feel free to return anytime."
+
+actions:
+  - action_stock_price
+  - action_aspi_price
+  - action_sentiment_analysis
+  - action_openai_chat
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
