@@ -51,7 +51,7 @@ print("✅ Predictions converted to dictionary format!")
 
 print(type(predictions_dict))  # Should be <class 'list'>
 print(len(predictions_dict))   # Should be greater than 0
-print(predictions_dict[:2])    # Print the first two records for debugging
+#print(predictions_dict[:2])    # Print the first two records for debugging
 
 try:
     client.admin.command('ping')
