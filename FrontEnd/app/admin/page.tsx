@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from 'react';
 
@@ -35,6 +35,10 @@ export default function CSVUploadPage() {
     }
   };
 
+  const handleRemoveFile = (setter: (file: File | null) => void) => () => {
+    setter(null);
+  };
+
   const handleSubmit = () => {
     // Handle form submission here
     console.log('CSV File 1:', csvFile1);
@@ -52,7 +56,7 @@ export default function CSVUploadPage() {
       <div className="w-full max-w-2xl bg-gray-900 rounded-lg p-8 shadow-lg border border-gray-800">
         <h2 className="text-2xl font-semibold mb-6 text-gray-200">Upload Market Data</h2>
 
-        {/* CSV File 1 - News data Upload */}
+        {/* CSV File 1 - News Data Upload */}
         <div
           className={`w-full p-6 border-2 border-dashed rounded-lg ${
             isDragging ? 'border-emerald-400 bg-gray-800' : 'border-gray-700 bg-gray-950'
@@ -76,11 +80,19 @@ export default function CSVUploadPage() {
             Browse
           </label>
           {csvFile1 && (
-            <p className="mt-4 text-center text-sm text-gray-300">Selected File: {csvFile1.name}</p>
+            <div className="mt-4 text-center">
+              <p className="text-sm text-gray-300">Selected File: {csvFile1.name}</p>
+              <button
+                onClick={handleRemoveFile(setCsvFile1)}
+                className="mt-2 text-sm text-red-500 hover:text-red-400 transition-all duration-300"
+              >
+                Remove File
+              </button>
+            </div>
           )}
         </div>
 
-        {/* CSV File 2 - company stock data Upload */}
+        {/* CSV File 2 - Company Stock Data Upload */}
         <div
           className={`w-full p-6 border-2 border-dashed rounded-lg ${
             isDragging ? 'border-emerald-400 bg-gray-800' : 'border-gray-700 bg-gray-950'
@@ -104,7 +116,15 @@ export default function CSVUploadPage() {
             Browse
           </label>
           {csvFile2 && (
-            <p className="mt-4 text-center text-sm text-gray-300">Selected File: {csvFile2.name}</p>
+            <div className="mt-4 text-center">
+              <p className="text-sm text-gray-300">Selected File: {csvFile2.name}</p>
+              <button
+                onClick={handleRemoveFile(setCsvFile2)}
+                className="mt-2 text-sm text-red-500 hover:text-red-400 transition-all duration-300"
+              >
+                Remove File
+              </button>
+            </div>
           )}
         </div>
 
