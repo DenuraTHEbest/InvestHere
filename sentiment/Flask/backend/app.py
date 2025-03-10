@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify, abort
-from process_news import process_news_entry
+from process_news import process_batch, process_news_entry
 from aggregate_sentiment import aggregate_sentiment
 from database.init_mongo import predictions_collection, news_collection
 import logging
+import pandas as pd
+from io import StringIO
 
 app = Flask(__name__)
 
@@ -13,50 +15,45 @@ logger = logging.getLogger(__name__)
 @app.route('/process_news', methods=['POST'])
 def process_news_endpoint():
     try:
-        # Validate input
-        if not request.json or "news" not in request.json:
-            abort(400, description="Invalid input: 'news' field is required")
+        logger.info("Received request at /process_news")
 
-        news_list = request.json.get("news")
-        if not isinstance(news_list, list):
-            abort(400, description="Invalid input: 'news' must be a list")
+        # Check if file exists in request
+        if 'file' not in request.files:
+            abort(400, description="Invalid input: 'file' field is required")
 
-        # Process each news entry
-        results = [process_news_entry(news) for news in news_list]
+        file = request.files['file']
+        if file.filename == '':
+            abort(400, description="Invalid input: No file selected")
 
-        # Store results in MongoDB
-        if results:
-            news_collection.insert_many(results)
+        logger.info(f"File received: {file.filename}")
 
-        return jsonify({"status": "success", "processed_entries": len(results)}), 200
+        # Read CSV
+        import pandas as pd
+        df = pd.read_csv(file)
+        logger.info(f"CSV file read successfully. Shape: {df.shape}")
+
+        if df.empty:
+            logger.warning("Uploaded CSV file is empty")
+            return jsonify({"status": "warning", "message": "Empty CSV file"}), 400
+        
+        # Process data in batches
+        processed_entries = []
+        for _, row in df.iterrows():
+            result = process_news_entry(row.to_dict())
+            if result and not result.get("ignored"):
+                processed_entries.append(result)
+
+        # Insert into MongoDB at once (batch insert)
+        if processed_entries:
+            news_collection.insert_many(processed_entries)
+            logger.info(f"Inserted {len(processed_entries)} entries into MongoDB")
+
+        return jsonify({"status": "success", "processed_entries": len(processed_entries)}), 200
+
     except Exception as e:
-        logger.error(f"Error in /process_news: {str(e)}")
-        abort(500, description="Internal server error")
-
-@app.route('/get_predictions', methods=['GET'])
-def get_predictions():
-    try:
-        # Aggregate sentiment scores
-        sentiment_scores = aggregate_sentiment(period="daily").to_dict(orient="records")
-
-        # Format predictions
-        predictions = [
-            {
-                "date": entry["date"],
-                "sentiment_score": entry["sentiment_score"],
-                # "predicted_aspi_change": predict_aspi(entry["sentiment_score"], 0.1)  # Uncomment if needed
-            }
-            for entry in sentiment_scores
-        ]
-
-        # Store predictions in MongoDB
-        if predictions:
-            predictions_collection.insert_many(predictions)
-
-        return jsonify({"status": "success", "predictions": predictions}), 200
-    except Exception as e:
-        logger.error(f"Error in /get_predictions: {str(e)}")
-        abort(500, description="Internal server error")
+        logger.error(f"Error in /process_news: {str(e)}", exc_info=True)
+        return jsonify({"error": str(e)}), 500
+    
 
 if __name__ == '__main__':
     app.run(debug=True)

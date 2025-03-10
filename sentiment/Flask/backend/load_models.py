@@ -11,4 +11,7 @@ SENTIMENT_MODEL_PATH = "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2
 sentiment_model = AutoModelForSequenceClassification.from_pretrained(SENTIMENT_MODEL_PATH)
 sentiment_tokenizer = AutoTokenizer.from_pretrained(SENTIMENT_MODEL_PATH)
 
+# Set to evaluation
+sentiment_model.eval()  
+
 print("✅ Models loaded successfully!")
