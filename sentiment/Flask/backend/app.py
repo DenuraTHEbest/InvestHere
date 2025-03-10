@@ -1,10 +1,9 @@
 from flask import Flask, request, jsonify, abort
-from process_news import process_batch, process_news_entry
-from aggregate_sentiment import aggregate_sentiment
-from database.init_mongo import predictions_collection, news_collection
+from process_news import process_news_entry  # Import the function to process individual entries
+from aggregate_sentiment import compute_and_store_scores  # Import the function to compute scores
+from database.init_mongo import news_collection  # Import MongoDB collection
 import logging
 import pandas as pd
-from io import StringIO
 
 app = Flask(__name__)
 
@@ -28,7 +27,6 @@ def process_news_endpoint():
         logger.info(f"File received: {file.filename}")
 
         # Read CSV
-        import pandas as pd
         df = pd.read_csv(file)
         logger.info(f"CSV file read successfully. Shape: {df.shape}")
 
@@ -39,14 +37,18 @@ def process_news_endpoint():
         # Process data in batches
         processed_entries = []
         for _, row in df.iterrows():
-            result = process_news_entry(row.to_dict())
-            if result and not result.get("ignored"):
+            result = process_news_entry(row.to_dict())  # Process each row
+            if result and not result.get("ignored"):  # Skip ignored entries
                 processed_entries.append(result)
 
         # Insert into MongoDB at once (batch insert)
         if processed_entries:
             news_collection.insert_many(processed_entries)
             logger.info(f"Inserted {len(processed_entries)} entries into MongoDB")
+
+            # Compute and store sentiment scores
+            compute_and_store_scores(processed_entries)
+            logger.info("Computed and stored sentiment scores successfully")
 
         return jsonify({"status": "success", "processed_entries": len(processed_entries)}), 200
 

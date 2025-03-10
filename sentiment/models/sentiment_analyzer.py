@@ -126,6 +126,6 @@ predicted_labels = torch.argmax(torch.tensor(predictions.predictions), axis=1)
 reverse_label_map = {v: k for k, v in label_map.items()}
 unlabeled_data['predicted_label'] = [reverse_label_map[label.item()] for label in predicted_labels]
 
-# Save the predictions to a new CSV
+'''# Save the predictions to a new CSV
 unlabeled_data.to_csv("/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/LabellingData/data/predictions.csv", index=False)
-print("Predictions saved to /Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/LabellingData/data/predictions.csv")
+print("Predictions saved to /Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/LabellingData/data/predictions.csv")'''

@@ -1,5 +1,5 @@
 from load_models import category_model, category_tokenizer, sentiment_model, sentiment_tokenizer
-from database.init_mongo import news_collection, aspi_collection, daily_scores_collection, weekly_scores_collection
+from database.init_mongo import news_collection, daily_scores_collection, weekly_scores_collection, aspi_collection
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 from datetime import datetime, timedelta

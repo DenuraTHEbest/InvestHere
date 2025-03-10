@@ -16,6 +16,9 @@ try:
     db = client[database_name]
     news_collection = db["news"]
     predictions_collection = db["predictions"]
+    aspi_collection = db["aspi"]
+    daily_scores_collection = db["daily_scores"]
+    weekly_scores_collection = db["weekly_scores"]
     print("✅ Connected to MongoDB Atlas!")
 except Exception as e:
     print(f"❌ Failed to connect to MongoDB Atlas: {e}")
