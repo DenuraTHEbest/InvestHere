@@ -1,40 +1,25 @@
-import pandas as pd
 import os
+import pandas as pd
 from glob import glob
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-import numpy as np
-from pymongo import MongoClient
-import certifi
-import gridfs
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, confusion_matrix, mean_absolute_error, mean_squared_error, r2_score
 from io import BytesIO
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-# MongoDB Connection Setup
-username = "kavishanvishwajith"
-password = "BjNG7kGpWeLUJXNc"
-cluster_url = "cluster01.e5p2x.mongodb.net"
-database_name = "test"
-
-mongo_uri = f"mongodb+srv://{username}:{password}@{cluster_url}/{database_name}?retryWrites=true&w=majority"
-
-try:
-    client = MongoClient(mongo_uri, tls=True, tlsCAFile=certifi.where())
-    db = client[database_name]
-    news_collection = db["news"]
-    predictions_collection = db["predictions"]
-    fs = gridfs.GridFS(db)  # GridFS for file storage
-    print("✅ Connected to MongoDB Atlas!")
-except Exception as e:
-    print(f"❌ Failed to connect to MongoDB Atlas: {e}")
-    exit()
+from retreive import fs
 
 # Data Processing & Model Training
-input_directory = r'C:\Users\nimsi\OneDrive\Documents\DSGP_Datasets'
-output_directory = r'C:\Users\nimsi\OneDrive\Documents\DSGP_Datasets\stock_predictions'
+input_directory = r"C:\Users\nimsi\OneDrive\Documents\New_age_ML\preprocessed2"
+output_directory = r"C:\Users\nimsi\OneDrive\Documents\New_age_ML\stock_predictions4"
 os.makedirs(output_directory, exist_ok=True)  # Ensure the directory exists
 
 file_paths = glob(os.path.join(input_directory, '*.xlsx'))
+
+# Lists to store all predictions and true labels for overall evaluation
+all_y_test = []
+all_y_pred = []
 
 for file_path in file_paths:
     company_name = os.path.splitext(os.path.basename(file_path))[0]
@@ -53,7 +38,7 @@ for file_path in file_paths:
         print(f"Warning: 'TRADING DATE' column not found in {company_name}. Skipping this file.")
         continue
 
-    features = ['OPEN PRICE (Rs.)', 'Year', 'Month', 'Day']
+    features = ['OPEN PRICE (Rs.)', 'Year', 'Month', 'Day', 'CLOSE PRICE (Lag 1)', 'CLOSE PRICE (Lag 2)', 'CLOSE PRICE (Lag 3)', 'MA_7','MA_14','MA_30']
     missing_features = [feature for feature in features if feature not in df.columns]
     if missing_features:
         print(f"Warning: Missing features {missing_features} in {company_name}. Skipping this file.")
@@ -78,6 +63,10 @@ for file_path in file_paths:
 
     y_pred = model.predict(X_test)
 
+    # Store predictions and true labels for overall evaluation
+    all_y_test.extend(y_test.values)
+    all_y_pred.extend(y_pred)
+
     df_test = X_test.copy()
     df_test['Actual CLOSE PRICE (Rs.)'] = y_test.values
     df_test['Predicted CLOSE PRICE (Rs.)'] = y_pred
@@ -97,4 +86,46 @@ for file_path in file_paths:
     df_test.to_excel(local_file_path, index=False, engine='openpyxl')
     print(f"📁 Saved {company_name}_predictions.xlsx locally at {local_file_path}")
 
-print("✅ Model training and file storage completed successfully.")
+# Convert predictions and true labels to numpy arrays for overall evaluation
+all_y_test = pd.Series(all_y_test)
+all_y_pred = pd.Series(all_y_pred)
+
+# Regression Metrics for Overall Model
+mae = mean_absolute_error(all_y_test, all_y_pred)
+mse = mean_squared_error(all_y_test, all_y_pred)
+r2 = r2_score(all_y_test, all_y_pred)
+
+print("\n📊 Overall Regression Metrics:")
+print(f"Mean Absolute Error (MAE): {mae}")
+print(f"Mean Squared Error (MSE): {mse}")
+print(f"R-squared (R2): {r2}")
+
+# Classification Metrics for Overall Model (Optional: Convert to Classification Problem)
+# Example: Predict if the price will go up (1) or down (0)
+all_y_test_class = (all_y_test > all_y_test.shift(1)).astype(int)
+all_y_pred_class = (all_y_pred > all_y_test.shift(1)).astype(int)
+
+accuracy = accuracy_score(all_y_test_class, all_y_pred_class)
+f1 = f1_score(all_y_test_class, all_y_pred_class)
+precision = precision_score(all_y_test_class, all_y_pred_class)
+recall = recall_score(all_y_test_class, all_y_pred_class)
+conf_matrix = confusion_matrix(all_y_test_class, all_y_pred_class)
+
+print("\n📊 Overall Classification Metrics:")
+print(f"Accuracy: {accuracy}")
+print(f"F1-Score: {f1}")
+print(f"Precision: {precision}")
+print(f"Recall: {recall}")
+print(f"Confusion Matrix:\n{conf_matrix}")
+
+# Plot Graphical Confusion Matrix
+plt.figure(figsize=(8, 6))
+sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', cbar=False,
+            xticklabels=['Predicted Down (0)', 'Predicted Up (1)'],
+            yticklabels=['Actual Down (0)', 'Actual Up (1)'])
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix')
+plt.show()
+
+print("✅ Model training, evaluation, and file storage completed successfully.")
