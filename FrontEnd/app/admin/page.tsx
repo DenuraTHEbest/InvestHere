@@ -39,13 +39,47 @@ export default function CSVUploadPage() {
     setter(null);
   };
 
-  const handleSubmit = () => {
-    // Handle form submission here
+  const handleSubmit = async () => {
     console.log('CSV File 1:', csvFile1);
     console.log('CSV File 2:', csvFile2);
     console.log('Decimal Value:', decimalValue);
-    // Add your logic to process the files and decimal value
+  
+    if (!csvFile1) {
+      alert("Please select a file");
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('file1', csvFile1);
+  
+    try {
+      const response = await fetch('http://127.0.0.1:5000/process_news', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      const data = await response.json();
+  
+      console.log('Response:', data);
+      console.log('Response Status:', response.status);
+  
+      // ✅ Check the backend response status and handle accordingly
+      if (response.status === 200 && data.status === 'success') {
+        console.log('File uploaded successfully:', data);
+        alert(data.message || 'File uploaded and processed successfully!');
+        window.location.reload(); // Refresh after success
+      } else {
+        console.error('Failed to upload file:', data);
+        alert(data.message || 'Failed to process the file');
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      alert(`Failed to upload the file: ${errorMessage}`);
+    }
   };
+  
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 flex flex-col items-center justify-center p-6 text-white">

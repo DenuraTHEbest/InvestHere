@@ -4,8 +4,10 @@ from aggregate_sentiment import compute_and_store_scores  # Import the function 
 from database.init_mongo import news_collection  # Import MongoDB collection
 import logging
 import pandas as pd
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app) 
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -16,29 +18,27 @@ def process_news_endpoint():
     try:
         logger.info("Received request at /process_news")
 
-        # Check if file exists in request
-        if 'file' not in request.files:
-            abort(400, description="Invalid input: 'file' field is required")
+        if 'file1' not in request.files:
+            abort(400, description="Invalid input: 'file1' field is required")
 
-        file = request.files['file']
-        if file.filename == '':
-            abort(400, description="Invalid input: No file selected")
+        file1 = request.files['file1']
+        if file1.filename == '':
+            abort(400, description="Invalid input: No file selected for 'file1'")
 
-        logger.info(f"File received: {file.filename}")
+        logger.info(f"File received: {file1.filename}")
 
-        # Read CSV
-        df = pd.read_csv(file)
+        df = pd.read_csv(file1)
         logger.info(f"CSV file read successfully. Shape: {df.shape}")
 
         if df.empty:
             logger.warning("Uploaded CSV file is empty")
-            return jsonify({"status": "warning", "message": "Empty CSV file"}), 400
+            return jsonify({"status": "warning", "message": "Empty CSV file"}), 200
         
         # Process data in batches
         processed_entries = []
         for _, row in df.iterrows():
-            result = process_news_entry(row.to_dict())  # Process each row
-            if result and not result.get("ignored"):  # Skip ignored entries
+            result = process_news_entry(row.to_dict())
+            if result and not result.get("ignored"):
                 processed_entries.append(result)
 
         # Insert into MongoDB at once (batch insert)
@@ -50,12 +50,20 @@ def process_news_endpoint():
             compute_and_store_scores(processed_entries)
             logger.info("Computed and stored sentiment scores successfully")
 
-        return jsonify({"status": "success", "processed_entries": len(processed_entries)}), 200
+        # ✅ Consistent success response
+        return jsonify({
+            "status": "success",
+            "message": "File processed successfully",
+            "processed_entries": len(processed_entries)
+        }), 200
 
     except Exception as e:
         logger.error(f"Error in /process_news: {str(e)}", exc_info=True)
-        return jsonify({"error": str(e)}), 500
+        # ✅ Consistent error response
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
     
-
 if __name__ == '__main__':
     app.run(debug=True)
