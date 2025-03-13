@@ -1,42 +1,30 @@
-# Stock Price and ASPI Prediction for the Colombo Stock Exchange (CSE)
+# Sentiment Analysis for the Colombo Stock Exchange (CSE) #
 
-This repository contains the code and resources for our data science group project focused on predicting stock prices and the All Share Price Index (ASPI) for the Colombo Stock Exchange (CSE). Our approach combines technical indicators with sentiment analysis of Sinhala news articles to provide a more accurate and localized prediction model.
+## Project Overview ##
 
-## Project Overview
+This project focuses on analyzing the sentiment of Sinhala news articles to study their influence on stock price movements in the Colombo Stock Exchange (CSE).  
+Given that most Sri Lankan news and investors are Sinhala-speaking, this analysis aims to capture potential sentiment-driven impacts on stock prices, particularly the All Share Price Index (ASPI).
 
-Predicting stock market trends is a complex task, especially in emerging markets like Sri Lanka. Traditional prediction models often overlook the influence of local news and sentiment. This project addresses this gap by incorporating sentiment analysis of Sinhala news articles, which are a significant source of information for local investors. By combining this with established technical indicators, we aim to develop a more robust and accurate prediction model for the CSE.
+---
 
-Our project focuses on two key predictions:
+## Dataset ##
 
-*   **Individual Stock Prices:** Predicting the price movements of specific stocks listed on the CSE.
-*   **All Share Price Index (ASPI):** Predicting the overall trend of the CSE market using the ASPI.
+- **Source:** A dataset containing approximately 50,000 Sinhala news articles over a span of three years.  
+- **Features:** Each news article includes attributes such as publication date, title, and sentiment score.  
+- **Preprocessing:** Sentiments were derived from the text using a pretrained SinBERT model, fine-tuned with a labeled dataset for improved accuracy.
 
-## Data
+---
 
-*   **CSE Data:** Historical stock price data obtained from the CSE.
-*   **Sinhala News Data:** News articles collected from various Sinhala news sources.
+## Methodology ##
 
-## Methodology
+1. **Model:**
+   - The SinBERT pretrained model was fine-tuned using a labeled sentiment dataset.
+   - The fine-tuned model assigns sentiments to news articles as positive, neutral, or negative.
 
-Our prediction model combines two key components:
+2. **Sentiment Scoring:**
+   - Sentiments were quantified using a grid search method to determine optimal weights for sentiment influence.
+   - Sentiment scores were correlated with percentage changes in ASPI values.
 
-*   **Technical Analysis:** We utilize various technical indicators, such as moving averages, momentum indicators, and volatility measures, calculated from historical stock price data.
-*   **Sentiment Analysis:** We perform sentiment analysis on Sinhala news articles using Natural Language Processing (NLP) techniques to capture market sentiment.
-
-These components are then integrated into machine learning models to predict stock prices and the ASPI.
-
-## Technologies 
-
-*   Python
-*   Pandas
-*   NumPy
-*   Scikit-learn
-*   BERT
-
-
-## Team Members
-
-*   Amna Shouqi
-*   Kavishan Vishwajith
-*   Denura Nimsith
-*   Roshana Charles
+3. **Analysis Levels:**
+   - **Daily Analysis:** Calculating daily sentiment scores and their relationship with daily ASPI changes.
+   - **Weekly Analysis:** Aggregating sentiment scores weekly to study their relationship with ASPI changes over a broader period.
