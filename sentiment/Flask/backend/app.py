@@ -123,11 +123,12 @@ def get_daily_sentiment():
 
     if latest_doc:
         latest_date = latest_doc['date']
-        start_of_day = latest_date.replace(hour=0, minute=0, second=0, microsecond=0)
-        end_of_day = start_of_day + timedelta(days=1)
+        start_of_period = latest_date - timedelta(days=20)  # Last 20 days
+        start_of_period = start_of_period.replace(hour=0, minute=0, second=0, microsecond=0)
+        end_of_day = latest_date.replace(hour=23, minute=59, second=59, microsecond=999999)
 
         data = test_collection.find({
-            'date': {'$gte': start_of_day, '$lt': end_of_day}
+            'date': {'$gte': start_of_period, '$lte': end_of_day}
         })
 
         result = []
