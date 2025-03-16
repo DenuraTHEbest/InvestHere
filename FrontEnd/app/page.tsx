@@ -7,10 +7,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/theme-toggle";
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState , useEffect} from 'react';
+import { SentimentItem, SentimentData, LineChartDataItem } from '@/types/sentiment';
 
 // Mock data for sentiment analysis
-const sentimentData = {
+/*const sentimentData = {
   daily: [
     { name: 'Positive', value: 60 },
     { name: 'Neutral', value: 25 },
@@ -21,7 +22,7 @@ const sentimentData = {
     { name: 'Neutral', value: 30 },
     { name: 'Negative', value: 15 },
   ],
-};
+};*/
 
 const SENTIMENT_COLORS = ['#10B981', '#6B7280', '#EF4444'];
 
@@ -80,6 +81,46 @@ export default function Home() {
   const filteredStocks = stockPredictions.filter(stock => 
     stock.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const [sentimentData, setSentimentData] = useState<SentimentData>({
+    daily: [],
+    weekly: [],
+  });
+
+  const [lineChartData, setLineChartData] = useState<LineChartDataItem[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch('http://127.0.0.1:5000/api/sentiment');
+        const data = await res.json();
+
+        setSentimentData({
+          daily: [
+            { name: 'Positive', value: data.daily.reduce((sum: number, item: SentimentItem) => sum + item.positive, 0) },
+            { name: 'Neutral', value: data.daily.reduce((sum: number, item: SentimentItem) => sum + item.neutral, 0) },
+            { name: 'Negative', value: data.daily.reduce((sum: number, item: SentimentItem) => sum + item.negative, 0) },
+          ],
+          weekly: [
+            { name: 'Positive', value: data.weekly.reduce((sum: number, item: SentimentItem) => sum + item.positive, 0) },
+            { name: 'Neutral', value: data.weekly.reduce((sum: number, item: SentimentItem) => sum + item.neutral, 0) },
+            { name: 'Negative', value: data.weekly.reduce((sum: number, item: SentimentItem) => sum + item.negative, 0) },
+          ],
+        });
+
+        setLineChartData(
+          data.daily.map((item: SentimentItem) => ({
+            date: new Date(item.date).toLocaleDateString(),
+            sentiment: item.weighted_score,
+          }))
+        );
+      } catch (err) {
+        console.error('Error fetching sentiment data:', err);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background font-sans">
