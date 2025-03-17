@@ -1,0 +1,48 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - stock_price
+  - aspi_price
+  - sentiment_analysis
+  - analyze_sentiment
+  - openai_chat
+  - yes
+  - no
+  - analyze_aspi
+  - analyze_company_stock
+
+entities:
+  - company
+
+slots:
+  company_symbol:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: company
+
+responses:
+  utter_greet:
+    - text: "Hello! How can I assist you with stock market insights today?"
+  utter_goodbye:
+    - text: "Goodbye! Feel free to return anytime."
+  utter_analyze_aspi:
+    - text: "Based on the predictions, the ASPI is expected to {trend}. The predicted volatility is {volatility:.2f}, and the market is expected to change by {week_change:.2f}%."
+  utter_analyze_company_stock:
+    - text: "📈 Stock Analysis for {company}: \n 🔹 The stock price is predicted to {trend} over the next week. \n 🔹 Average predicted price: ${avg_price:.2f} \n 🔹 Volatility: {price_volatility:.2f} ({'high' if price_volatility > 2 else 'low'} fluctuations) \n 🔹 Expected percentage change for the week: {week_change:.2f}%"
+
+actions:
+  - action_stock_price
+  - action_aspi_price
+  - action_sentiment_analysis
+  - action_analyze_sentiment
+  - action_openai_chat
+  - action_analyze_aspi
+  - action_analyze_company_stock
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

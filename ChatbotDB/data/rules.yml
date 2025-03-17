@@ -1,0 +1,53 @@
+version: "3.1"
+
+rules:
+- rule: Greet the user
+  steps:
+    - intent: greet
+    - action: utter_greet
+
+- rule: Say goodbye
+  steps:
+    - intent: goodbye
+    - action: utter_goodbye
+
+- rule: Provide stock price
+  steps:
+    - intent: stock_price
+    - slot_was_set:
+        - company_symbol: true
+    - action: action_stock_price
+
+- rule: Provide ASPI value
+  steps:
+    - intent: aspi_price
+    - action: action_aspi_price
+
+- rule: Perform sentiment analysis
+  steps:
+    - intent: sentiment_analysis
+    - slot_was_set:
+        - company_symbol: true
+    - action: action_sentiment_analysis
+
+- rule: Perform sentiment trend analysis
+  steps:
+    - intent: analyze_sentiment
+    - action: action_analyze_sentiment
+
+- rule: OpenAI chat response
+  steps:
+    - intent: openai_chat
+    - action: action_openai_chat
+
+- rule: Analyze ASPI predictions
+  steps:
+    - intent: analyze_aspi
+    - action: action_analyze_aspi
+
+- rule: Analyze Company Stock
+  steps:
+    - intent: analyze_company_stock
+    - slot_was_set:
+        - company_symbol: true
+    - action: action_analyze_company_stock

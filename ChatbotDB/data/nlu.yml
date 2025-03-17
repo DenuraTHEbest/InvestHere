@@ -1,0 +1,344 @@
+version: "3.1"
+nlu:
+- intent: greet
+  examples: |
+    - Hello
+    - Hi there
+    - Hey bot!
+    - Good morning
+    - How are you?
+    - Hi
+    - Hey
+    - How’s it going?
+    - What’s up?
+    - Good afternoon
+    - Good evening
+    - How are you doing?
+    - Hey, how’s everything?
+    - Howdy
+    - What’s good?
+    - How’s life?
+    - How’s your day been?
+    - Greetings
+    - Salutations
+    - What’s happening?
+    - Howdy, bot!
+    - Yo
+    - Wassup?
+    - Hello there!
+    - Morning!
+    - Hi, how are you?
+    - What’s new?
+    - How’s your day going?
+    - What’s going on?
+
+- intent: goodbye
+  examples: |
+    - Bye
+    - See you later
+    - Goodbye
+    - Take care
+    - Farewell
+    - Bye-bye
+    - Catch you later
+    - Have a good day
+    - See ya
+    - Talk soon
+    - I’ll be off now
+    - Take it easy
+    - Until next time
+    - Bye for now
+    - I’m off
+    - Catch you soon
+    - Later
+    - Goodbye for now
+    - See you soon
+    - Take care of yourself
+    - Have a nice day
+    - Have a great day
+    - All the best
+    - I’ll talk to you later
+    - Stay safe
+    - Enjoy the rest of your day
+    - Peace out
+    - Have a great evening
+    - Farewell for now
+
+- intent: stock_price
+  examples: |
+    - What is the stock price of [AAPL](company)?
+    - Get me the latest price for [TSLA](company).
+    - How is [GOOGL](company) performing today?
+    - What’s the current stock price for [AMZN](company)?
+    - How much is [MSFT](company) trading for?
+    - Check the price for [NFLX](company).
+    - What is the share price of [META](company)?
+    - What’s the latest price for [SPY](company)?
+    - Show me the stock price of [NVDA](company).
+    - Can you tell me the stock price of [GOOG](company)?
+    - Get me the current price of [AMD](company).
+    - What’s the stock value of [BABA](company)?
+    - How much is [TSLA](company) worth now?
+    - What’s the latest quote for [AMZN](company)?
+    - Can you tell me [AAPL](company)’s stock price?
+    - What’s the current trading value for [IBM](company)?
+    - How’s [NVIDIA](company) doing today?
+    - Can you provide the stock price for [MSFT](company)?
+    - What is [GOOGL](company)’s latest price?
+    - How is [TWTR](company) performing right now?
+    - Check [MSFT](company) stock price.
+    - How much is [TSLA](company) trading at?
+    - What is the market price for [INTC](company)?
+    - Show me the [AMZN](company) stock.
+    - What’s the value of [SPY](company) right now?
+    - Can you check the stock price of [GOOG](company)?
+    - Give me the latest [AAPL](company) quote.
+    - Tell me how [NVIDIA](company) is performing.
+
+- intent: aspi_price
+  examples: |
+    - What is the ASPI today?
+    - Show me the All Share Price Index.
+    - Get the latest ASPI value.
+    - What’s the current value of the ASPI?
+    - How’s the ASPI performing today?
+    - Can you provide the ASPI for today?
+    - What is the ASPI number right now?
+    - What’s the ASPI value as of today?
+    - Tell me the latest ASPI number.
+    - Show me the ASPI for today’s market.
+    - How is the ASPI doing today?
+    - Get me the latest ASPI data.
+    - Can you check the ASPI right now?
+    - How is the ASPI trending today?
+    - What’s the ASPI at this moment?
+    - Can you provide ASPI updates?
+    - Get me the ASPI stats for today.
+    - What is the current value of ASPI?
+    - Check the ASPI for today.
+    - Can you tell me today’s ASPI number?
+    - How is the ASPI moving today?
+    - What’s the ASPI status today?
+    - Show me the All Share Price Index today.
+    - How has the ASPI changed today?
+    - Get the latest ASPI report.
+    - What’s the status of the ASPI now?
+    - How much is the ASPI right now?
+    - What’s the ASPI for the Colombo Stock Exchange?
+
+- intent: sentiment_analysis
+  examples: |
+    - What is the sentiment on [Apple](company)?
+    - Analyze stock news for [Tesla](company).
+    - How are people feeling about [Microsoft](company)?
+    - Can you analyze the sentiment on [AMZN](company)?
+    - What’s the sentiment around [AAPL](company)?
+    - How do people feel about [TSLA](company)?
+    - Can you tell me the sentiment for [GOOG](company)?
+    - What’s the market sentiment for [META](company)?
+    - How do investors feel about [SPY](company)?
+    - What’s the sentiment around [NVIDIA](company)?
+    - How is the sentiment for [IBM](company)?
+    - Can you check the sentiment around [MSFT](company)?
+    - What’s the sentiment regarding [BABA](company)?
+    - Tell me the sentiment on [SPY](company).
+    - How is the sentiment for [TWTR](company)?
+    - How’s the sentiment for [NVDA](company)?
+    - What are people saying about [GOOGL](company)?
+    - Can you analyze the market sentiment for [Tesla](company)?
+    - What’s the investor sentiment for [AMZN](company)?
+    - How do people feel about [AAPL](company) today?
+    - Can you check the overall sentiment on [Meta](company)?
+    - Tell me how people feel about [TSLA](company).
+    - What’s the current sentiment on [GOOG](company)?
+    - Analyze sentiment for [Intel](company).
+    - Can you give me the sentiment score for [AMD](company)?
+    - How do people perceive [MSFT](company)?
+    - What’s the sentiment like for [BABA](company)?
+    - How is sentiment trending for [TWTR](company)?
+
+- intent: openai_chat
+  examples: |
+    - Can you tell me about stock market trends?
+    - What do you think about investing in tech stocks?
+    - How should I diversify my portfolio?
+    - Can you provide insights into the current market?
+    - What’s your view on the stock market these days?
+    - How can I get started in investing?
+    - What should I look for when investing in stocks?
+    - Can you explain market trends to me?
+    - Should I invest in [Apple](company)?
+    - What do you think about the [Tesla](company) stock price?
+    - How is [AMZN](company) expected to perform?
+    - Can you recommend some good stocks to invest in?
+    - How is the market expected to behave in the next quarter?
+    - Should I consider [MSFT](company) for my portfolio?
+    - Can you give me investment advice for [TSLA](company)?
+    - What are the best strategies for long-term investing?
+    - Should I buy or sell [AAPL](company)?
+    - What do you think about tech stocks in general?
+    - How can I balance my portfolio effectively?
+    - Can you explain how sentiment affects stock prices?
+    - What are your thoughts on the current market volatility?
+    - Should I buy more shares of [GOOGL](company)?
+    - What are the risks involved in investing in tech stocks?
+    - How can I mitigate risks while investing in the stock market?
+    - Do you think [BABA](company) is a good stock to invest in?
+    - Can you explain how I can interpret stock predictions?
+    - How do I assess the value of a stock like [TSLA](company)?
+    - Can you explain how global events affect stock prices?
+
+- intent: yes
+  examples: |
+    - Yes
+    - Sure
+    - Go ahead
+    - Please
+    - Yes, please
+    - Absolutely
+    - Of course
+    - Definitely
+    - Alright
+    - Yeah
+    - That sounds good
+    - I agree
+    - Yep
+    - I’m on board
+    - Sure thing
+    - Yes, that’s fine
+    - Yes, go ahead
+    - That’s fine with me
+    - Sure, go for it
+    - Please proceed
+    - That’s alright
+    - Sure, let’s do it
+    - I’m okay with that
+    - Yes, I’m interested
+    - Okay, go ahead
+    - Absolutely, please
+    - Yeah, let’s do it
+    - I’m good with that
+    - Sounds great to me
+
+- intent: no
+  examples: |
+    - No
+    - No, thanks
+    - Not really
+    - No, I’m good
+    - I don’t need insights
+    - I’m fine, thank you
+    - No, I don’t need help
+    - Not at the moment
+    - No, I’m all set
+    - I’m good, thanks
+    - I’m okay
+    - No, I’m good with what I have
+    - I’m fine, thanks for asking
+    - I don’t think so
+    - Not right now
+    - I’m good without it
+    - I’m alright, thank you
+    - No, I’m good to go
+    - I don’t require that right now
+    - No, I don’t need it
+    - I’m okay for now
+    - I’m fine without it
+    - No, I’m set
+    - I’m good for now
+    - No thanks, I’m all right
+    - No need for that
+    - I’m not interested
+    - I’m good without it, thanks
+
+- intent: analyze_aspi
+  examples: |
+    - Can you analyze the ASPI trends for me?
+    - What do the ASPI predictions look like for this week?
+    - How is the ASPI expected to change?
+    - Can you give me an analysis of the ASPI?
+    - What’s the future of ASPI based on trends?
+    - Analyze the trends of the ASPI over the last month.
+    - Can you predict how ASPI will perform?
+    - What are the predictions for the ASPI this week?
+    - How is the ASPI expected to behave in the coming days?
+    - What’s the trend for ASPI looking like this month?
+    - Can you break down ASPI movements for me?
+    - How is the ASPI forecasted to perform?
+    - What’s the ASPI performance outlook for the next week?
+    - Analyze the ASPI movement over the last year.
+    - How is ASPI trending right now?
+    - What’s the short-term outlook for the ASPI?
+    - Can you provide predictions for the ASPI over the next month?
+    - What does the ASPI trend look like at the moment?
+    - How are analysts predicting ASPI will change?
+    - What can we expect for ASPI in the coming weeks?
+    - How is ASPI expected to react to current market conditions?
+    - Analyze the long-term trend of the ASPI.
+    - What are the key factors affecting the ASPI right now?
+    - Can you explain how the ASPI is expected to evolve?
+    - What is the outlook for ASPI in the next quarter?
+    - What are the strongest trends affecting ASPI currently?
+    - Can you identify major trends for ASPI?
+    - How is the ASPI expected to move based on current data?
+
+- intent: analyze_sentiment
+  examples: |
+    - Can you analyze the sentiment trends?
+    - How is the sentiment trending?
+    - Analyze sentiment trends.
+    - How are people feeling about the market?
+    - What’s the sentiment on the stock market these days?
+    - How is the sentiment shifting?
+    - Can you provide sentiment analysis trends?
+    - What is the general sentiment of the market right now?
+    - Can you track sentiment over the last week?
+    - How’s the market sentiment for [AAPL](company)?
+    - What’s the current trend for market sentiment?
+    - Analyze the sentiment trend for [Tesla](company).
+    - How’s the sentiment for [MSFT](company) moving?
+    - Can you provide the sentiment trend for [GOOGL](company)?
+    - How are sentiment trends evolving in the market?
+    - What’s the general sentiment in tech stocks?
+    - Can you give me a sentiment trend for [SPY](company)?
+    - How do people feel about the market right now?
+    - Can you analyze the latest sentiment data?
+    - How is sentiment evolving for [TSLA](company)?
+    - What’s the sentiment trend for the stock market?
+    - How is the sentiment towards [GOOG](company)?
+    - Can you analyze the sentiment trends in the financial market?
+    - How is the sentiment towards [BABA](company)?
+    - How do sentiment trends compare over the last few weeks?
+    - Can you explain the current sentiment for [NVIDIA](company)?
+    - What is the sentiment around [AMZN](company)?
+    - Can you give me the sentiment direction for the stock market?
+
+- intent: analyze_company_stock
+  examples: |
+    - Can you analyze the stock trends for [AAPL](company)?
+    - What are the predictions for [TSLA](company)?
+    - Analyze the stock performance of [GOOGL](company).
+    - How is [MSFT](company) expected to perform?
+    - What do the stock predictions say for [AMZN](company)?
+    - Analyze the stock trends for [SPY](company).
+    - How will [NVIDIA](company) stock move?
+    - What’s the forecast for [TSLA](company)?
+    - What can we expect for [Apple](company) stock performance?
+    - How is the stock of [BABA](company) likely to behave?
+    - What are the predictions for [Intel](company)?
+    - Analyze the stock trends of [Meta](company).
+    - What’s the stock performance outlook for [GOOGL](company)?
+    - How is [NVIDIA](company)’s stock expected to perform?
+    - Can you give me stock predictions for [AAPL](company)?
+    - How’s the stock performance of [TSLA](company)?
+    - What’s the trend for [AMZN](company) stock?
+    - How is [BABA](company) stock expected to behave?
+    - What’s the forecast for [GOOG](company) stock?
+    - Can you give me predictions on [TWTR](company) stock?
+    - Analyze the stock performance for [NVIDIA](company).
+    - What are the latest trends for [AAPL](company) stock?
+    - How are the stock trends for [Meta](company)?
+    - Can you predict the future stock of [TSLA](company)?
+    - How’s the stock outlook for [GOOGL](company)?
+    - Analyze the stock behavior for [Amazon](company).
+    - What do stock predictions indicate for [MSFT](company)?
