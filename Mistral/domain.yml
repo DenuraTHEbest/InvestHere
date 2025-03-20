@@ -1,0 +1,52 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - openai_chat
+  - yes
+  - no
+  - analyze_aspi
+  - analyze_sentiment  
+  - analyze_company_stock
+  - analyze_aspi_specific_date
+  - thank_you
+
+entities:
+  - company
+  - date
+
+slots:
+  company_symbol:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: company
+  specific_date:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: date
+
+responses:
+  utter_greet:
+    - text: "Hello! How can I assist you with stock market insights today?"
+  utter_goodbye:
+    - text: "Goodbye! Feel free to return anytime."
+  utter_thank_you:
+    - text: "You're welcome! Let me know if you need anything else."
+  
+
+actions:
+  - action_analyze_sentiment
+  - action_openai_chat
+  - action_analyze_aspi
+  - action_analyze_company_stock
+  - action_analyze_aspi_specific_date
+  - action_fallback
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
