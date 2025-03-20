@@ -1,0 +1,51 @@
+version: "3.1"
+
+rules:
+- rule: Greet the user
+  steps:
+    - intent: greet
+    - action: utter_greet
+
+- rule: Say goodbye
+  steps:
+    - intent: goodbye
+    - action: utter_goodbye
+
+- rule: Perform sentiment trend analysis
+  steps:
+    - intent: analyze_sentiment
+    - action: action_analyze_sentiment
+
+- rule: OpenAI chat response
+  steps:
+    - intent: openai_chat
+    - action: action_openai_chat
+
+- rule: Analyze ASPI predictions
+  steps:
+    - intent: analyze_aspi
+    - action: action_analyze_aspi
+
+- rule: Analyze Company Stock
+  steps:
+    - intent: analyze_company_stock
+    - slot_was_set:
+        - company_symbol: true
+    - action: action_analyze_company_stock
+
+- rule: Analyze ASPI for a specific date
+  steps:
+    - intent: analyze_aspi_specific_date
+    - slot_was_set:
+        - specific_date: true
+    - action: action_analyze_aspi_specific_date
+
+- rule: Thank the user
+  steps:
+    - intent: thank_you
+    - action: utter_thank_you
+    
+- rule: Fallback rule
+  steps:
+    - intent: nlu_fallback
+    - action: action_fallback

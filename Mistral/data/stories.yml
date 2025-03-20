@@ -1,0 +1,36 @@
+version: "3.1"
+
+stories:
+- story: Sentiment trend analysis
+  steps:
+    - intent: analyze_sentiment
+    - action: action_analyze_sentiment
+
+- story: OpenAI conversation
+  steps:
+    - intent: openai_chat
+    - action: action_openai_chat
+
+- story: Analyze ASPI trends
+  steps:
+    - intent: analyze_aspi
+    - action: action_analyze_aspi
+
+- story: Analyze Company Stock
+  steps:
+    - intent: analyze_company_stock
+    - slot_was_set:
+        - company_symbol: true
+    - action: action_analyze_company_stock
+
+- story: Analyze ASPI for a specific date
+  steps:
+    - intent: analyze_aspi_specific_date
+    - slot_was_set:
+        - specific_date: true
+    - action: action_analyze_aspi_specific_date
+
+- story: Thank the user
+  steps:
+    - intent: thank_you
+    - action: utter_thank_you

@@ -1,0 +1,277 @@
+version: "3.1"
+nlu:
+- intent: greet
+  examples: |
+    - Hello
+    - Hi there
+    - Hey bot!
+    - Good morning
+    - How are you?
+    - Hi
+    - Hey
+    - How’s it going?
+    - What’s up?
+    - Good afternoon
+    - Good evening
+    - How are you doing?
+    - Hey, how’s everything?
+    - Howdy
+    - What’s good?
+    - How’s life?
+    - How’s your day been?
+    - Greetings
+    - Salutations
+    - What’s happening?
+    - Howdy, bot!
+    - Yo
+    - Wassup?
+    - Hello there!
+    - Morning!
+    - Hi, how are you?
+    - What’s new?
+    - How’s your day going?
+    - What’s going on?
+
+- intent: goodbye
+  examples: |
+    - Bye
+    - See you later
+    - Goodbye
+    - Farewell
+    - Bye-bye
+    - See ya
+    - Talk soon
+    - I’ll be off now
+    - Bye for now
+    - I’m off
+    - Later
+    - Goodbye for now
+    - I’ll talk to you later
+    - Peace out
+    - Farewell for now
+
+- intent: openai_chat
+  examples: |
+    - What is the stock market?
+    - How does the stock market work?
+    - What are the main stock exchanges in the world?
+    - How do I start investing in stocks?
+    - What is a stock price prediction?
+    - What are technical indicators in stock trading?
+    - Can sentiment analysis help predict stock prices?
+    - What is the difference between stocks and bonds?
+    - How do I analyze a company's stock?
+    - What is a bull market and a bear market?
+    - What are blue-chip stocks?
+    - What is stock market volatility?
+    - How can I minimize risk when investing in stocks?
+    - What is fundamental analysis?
+    - What is technical analysis?
+    - How do stock prices change?
+    - What causes stock market crashes?
+    - What are dividends and how do they work?
+    - How do I choose the right stocks to invest in?
+    - What is day trading?
+    - What is the best way to invest for the long term?
+    - What are penny stocks?
+    - How does inflation affect the stock market?
+    - What is an IPO?
+    - What are exchange-traded funds (ETFs)?
+    - How does news affect stock prices?
+    - What role does AI play in stock market predictions?
+    - What are the risks of stock market trading?
+    - How do I read stock charts?
+
+    - What is the Colombo Stock Exchange?
+    - How can I invest in the Colombo Stock Exchange?
+    - What are the major companies listed on the Colombo Stock Exchange?
+    - How does the All Share Price Index (ASPI) work?
+    - What is the S&P Sri Lanka 20 index?
+    - How is the performance of the Colombo Stock Exchange in recent years?
+    - What are the trading hours of the Colombo Stock Exchange?
+    - What factors affect stock prices in Sri Lanka?
+    - How does the Sri Lankan economy impact the CSE?
+    - Are there any tax benefits for investing in the CSE?
+    - How can I check the stock prices of companies listed on the CSE?
+    - What are the top-performing stocks in the CSE?
+    - How do I analyze stock market trends in Sri Lanka?
+    - Is foreign investment allowed in the Colombo Stock Exchange?
+    - How does political stability affect the Sri Lankan stock market?
+    - Where can I find the latest stock market news in Sri Lanka?
+
+- intent: yes
+  examples: |
+    - Yes
+    - Sure
+    - Go ahead
+    - Please
+    - Yes, please
+    - Absolutely
+    - Of course
+    - Definitely
+    - Alright
+    - Yeah
+    - That sounds good
+    - I agree
+    - Yep
+    - I’m on board
+    - Sure thing
+    - Yes, that’s fine
+    - Yes, go ahead
+    - That’s fine with me
+    - Sure, go for it
+    - Please proceed
+    - That’s alright
+    - Sure, let’s do it
+    - I’m okay with that
+    - Yes, I’m interested
+    - Okay, go ahead
+    - Absolutely, please
+    - Yeah, let’s do it
+    - I’m good with that
+    - Sounds great to me
+
+- intent: no
+  examples: |
+    - No
+    - No, thanks
+    - Not really
+    - No, I’m good
+    - I don’t need insights
+    - I’m fine, thank you
+    - No, I don’t need help
+    - Not at the moment
+    - No, I’m all set
+    - I’m good, thanks
+    - I’m okay
+    - No, I’m good with what I have
+    - I’m fine, thanks for asking
+    - I don’t think so
+    - Not right now
+    - I’m good without it
+    - I’m alright, thank you
+    - No, I’m good to go
+    - I don’t require that right now
+    - No, I don’t need it
+    - I’m okay for now
+    - I’m fine without it
+    - No, I’m set
+    - I’m good for now
+    - No thanks, I’m all right
+    - No need for that
+    - I’m not interested
+    - I’m good without it, thanks
+
+- intent: analyze_aspi
+  examples: |
+    - Can you analyze the ASPI trends for me?
+    - What do the ASPI predictions look like for this week?
+    - How is the ASPI expected to change?
+    - Can you give me an analysis of the ASPI?
+    - What’s the future of ASPI based on trends?
+    - Analyze the trends of the ASPI over the last month.
+    - Can you predict how ASPI will perform?
+    - What are the predictions for the ASPI this week?
+    - How is the ASPI expected to behave in the coming days?
+    - What’s the trend for ASPI looking like this month?
+    - Can you break down ASPI movements for me?
+    - How is the ASPI forecasted to perform?
+    - What’s the ASPI performance outlook for the next week?
+    - How is ASPI trending right now?
+    - What’s the short-term outlook for the ASPI?
+    - Can you provide predictions for the ASPI over the next month?
+    - What does the ASPI trend look like at the moment?
+    - How are analysts predicting ASPI will change?
+    - What can we expect for ASPI in the coming weeks?
+    - How is ASPI expected to react to current market conditions?
+    - Analyze the long-term trend of the ASPI.
+    - What are the key factors affecting the ASPI right now?
+    - Can you explain how the ASPI is expected to evolve?
+    - What is the outlook for ASPI in the next quarter?
+    - What are the strongest trends affecting ASPI currently?
+    - Can you identify major trends for ASPI?
+    - How is the ASPI expected to move based on current data?
+
+- intent: analyze_sentiment
+  examples: |
+    - Can you analyze the sentiment trends?
+    - How is the sentiment trending?
+    - Analyze sentiment trends.
+    - How are people feeling about the market?
+    - What’s the sentiment on the stock market these days?
+    - How is the sentiment shifting?
+    - Can you provide sentiment analysis trends?
+    - What is the general sentiment of the market right now?
+    - Can you track sentiment over the last week?
+    - What’s the current trend for market sentiment?
+    - How are sentiment trends evolving in the market?
+    - How do people feel about the market right now?
+    - Can you analyze the latest sentiment data?
+    - What’s the sentiment trend for the stock market?
+    - How do sentiment trends compare over the last few weeks?
+    - Can you give me the sentiment direction for the stock market?
+
+- intent: analyze_company_stock
+  examples: |
+    - Can you analyze the stock trends for [AAPL](company)?
+    - What are the predictions for [TSLA](company)?
+    - Analyze the stock performance of [GOOGL](company).
+    - How is [MSFT](company) expected to perform?
+    - What do the stock predictions say for [AMZN](company)?
+    - Analyze the stock trends for [SPY](company).
+    - How will [NVIDIA](company) stock move?
+    - What’s the forecast for [TSLA](company)?
+    - What can we expect for [Apple](company) stock performance?
+    - How is the stock of [BABA](company) likely to behave?
+    - What are the predictions for [Intel](company)?
+    - Analyze the stock trends of [Meta](company).
+    - What’s the stock performance outlook for [GOOGL](company)?
+    - How is [NVIDIA](company)’s stock expected to perform?
+    - Can you give me stock predictions for [AAPL](company)?
+    - How’s the stock performance of [TSLA](company)?
+    - What’s the trend for [AMZN](company) stock?
+    - How is [BABA](company) stock expected to behave?
+    - What’s the forecast for [GOOG](company) stock?
+    - Can you give me predictions on [TWTR](company) stock?
+    - Analyze the stock performance for [NVIDIA](company).
+    - What are the latest trends for [AAPL](company) stock?
+    - How are the stock trends for [Meta](company)?
+    - Can you predict the future stock of [TSLA](company)?
+    - How’s the stock outlook for [GOOGL](company)?
+    - Analyze the stock behavior for [Amazon](company).
+    - What do stock predictions indicate for [MSFT](company)?
+
+- intent: analyze_aspi_specific_date
+  examples: |
+    - Can you analyze ASPI trends on [2025-03-15](date)?
+    - What was the ASPI value on [March 1st, 2025](date)?
+    - Show me ASPI analysis for [yesterday](date).
+    - How did ASPI perform on [last Monday](date)?
+    - What was the ASPI closing value on [2024-12-31](date)?
+    - Analyze ASPI movement on [January 10th](date).
+    - How was ASPI trending on [the first day of this month](date)?
+    - Provide ASPI insights for [2023-07-20](date).
+    - Can you check ASPI trends on [a week ago](date)?
+    - Give me ASPI details for [two days ago](date).
+
+- intent: thank_you
+  examples: |
+    - Thank you
+    - Thanks
+    - Thanks a lot
+    - Thank you so much
+    - Thanks a bunch
+    - Appreciate it
+    - Many thanks
+    - Much appreciated
+    - Thanks a ton
+    - Thanks a million
+    - Big thanks
+    - Grateful for your help
+    - Thank you kindly
+    - Thanks for your support
+    - Thanks for the help
+    - I appreciate it
+    - Cheers, thanks
+    - Thanks a heap
+    - Thank you, I appreciate it
