@@ -17,14 +17,14 @@ mongo_uri = f"mongodb+srv://{username}:{password}@{cluster_url}/{database_name}?
 try:
     client = MongoClient(mongo_uri, tls=True, tlsCAFile=certifi.where())
     db = client[database_name]
-    daily_scores_collection = db["test"]  # Use the 'aspi' collection
+    daily_scores_collection = db["test_week"]  # Use the 'aspi' collection
     print("✅ Connected to MongoDB Atlas!")
 except Exception as e:
     print(f"❌ Failed to connect to MongoDB Atlas: {e}")
     exit()
 
 # Read CSV file
-file_path = "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/sentiment/Data/Weighted_Scores/daily_weighted_score.csv"  # Update with the actual path
+file_path = "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/sentiment/Data/Weighted_Scores/weekly_weighted_scores.csv"  # Update with the actual path
 
 # Check if the CSV file exists
 if not os.path.exists(file_path):
@@ -43,12 +43,8 @@ data = []
 for index, row in df.iterrows():
     try:
         record = {
-            "date": datetime.strptime(row['Date'], '%Y-%m-%d'),  # Ensure 'Date' column exists
-            "negative": row['0'],
-            "neutral": row['1'],
-            "positive": row['2'],
-            "total": row['Total'],
-            "weighted_score": row['Weighted_Score']
+            "week": row['Week'],
+            "weighted_score": row['Weighted_Sentiment']
         }
         data.append(record)
     except KeyError as e:
@@ -64,6 +60,13 @@ try:
     print("✅ Data inserted successfully!")
 except Exception as e:
     print(f"❌ Failed to insert data into MongoDB: {e}")
+
+'''"date": datetime.strptime(row['Date'], '%Y-%m-%d'),  # Ensure 'Date' column exists
+            "negative": row['0'],
+            "neutral": row['1'],
+            "positive": row['2'],
+            "total": row['Total'],
+            "weighted_score": row['Weighted_Score']'''
 
 '''# Clean and format the data
 df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%Y')

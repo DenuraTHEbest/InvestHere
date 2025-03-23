@@ -20,6 +20,7 @@ try:
     daily_scores_collection = db["daily_scores"]
     weekly_scores_collection = db["weekly_scores"]
     test_collection = db["test"]
+    test_week_collection = db["test_week"]
     print("✅ Connected to MongoDB Atlas!")
 except Exception as e:
     print(f"❌ Failed to connect to MongoDB Atlas: {e}")
