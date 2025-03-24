@@ -6,11 +6,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-require("dotenv").config(); // Add this at the top
-mongoose.connect(process.env.MONGO_URI); // Use the environment variable
-
 // Connect to MongoDB
-mongoose.connect("mongodb+srv://kavishanvishwajith:BjNG7kGpWeLUJXNc@cluster01.e5p2x.mongodb.net/aspi_database?retryWrites=true&w=majority");
+mongoose.connect("mongodb+srv://kavishanvishwajith:BjNG7kGpWeLUJXNc@cluster01.e5p2x.mongodb.net/aspi_database?retryWrites=true&w=majority")
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 // Define a schema for ASPI predictions
 const aspiPredictionSchema = new mongoose.Schema({
@@ -19,10 +18,10 @@ const aspiPredictionSchema = new mongoose.Schema({
   Actual_Day_1: Number,
 });
 
-const ASPIPrediction = mongoose.model("ASPI_Prediction", aspiPredictionSchema);
+const ASPIPrediction = mongoose.model("aspi_data", aspiPredictionSchema, "aspi_data");
 
 // API to fetch ASPI data for the chart
-app.get("/api/aspi/history", async (req, res) => {
+app.get("/", async (req, res) => {
   try {
     const data = await ASPIPrediction.find().sort({ Date: 1 });
 
@@ -36,6 +35,29 @@ app.get("/api/aspi/history", async (req, res) => {
     res.json(processedData);
   } catch (error) {
     res.status(500).json({ message: "Error fetching data" });
+  }
+});
+
+// Route to insert sample data
+app.post("/insert-sample-data", async (req, res) => {
+  const sampleData = [
+    {
+      Date: new Date("2023-10-01"),
+      Predicted_Day_1: 1200,
+      Actual_Day_1: 1210,
+    },
+    {
+      Date: new Date("2023-10-02"),
+      Predicted_Day_1: 1220,
+      Actual_Day_1: 1215,
+    },
+  ];
+
+  try {
+    await ASPIPrediction.insertMany(sampleData);
+    res.json({ message: "Sample data inserted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error inserting sample data" });
   }
 });
 
