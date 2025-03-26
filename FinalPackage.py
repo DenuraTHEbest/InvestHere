@@ -30,9 +30,8 @@ print("✅ Model loaded successfully!")
 # ----------------------------------------------------------------
 # 3) Define required features (must match the training features)
 # ----------------------------------------------------------------
-required_features = [
-    'OPEN PRICE (Rs.)', 'Year', 'Month', 'Day',
-    'CLOSE PRICE (Lag 1)', 'CLOSE PRICE (Lag 2)', 'CLOSE PRICE (Lag 3)',
+required_features = ['Year', 'Month', 'Day',
+    'CLOSE PRICE (Lag 1)', 'CLOSE PRICE (Lag 2)', 'CLOSE PRICE (Lag 3)','CLOSE PRICE (Lag 4)','CLOSE PRICE (Lag 5)','CLOSE PRICE (Lag 6)','CLOSE PRICE (Lag 7)','CLOSE PRICE (Lag 8)','CLOSE PRICE (Lag 9)','CLOSE PRICE (Lag 10)',
     'MA_7', 'MA_14', 'MA_30'
 ]
 

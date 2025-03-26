@@ -1,10 +1,11 @@
 import pandas as pd
 import os
 from glob import glob
+import numpy as np
 
 # Define input and output directories
 input_directory = r'C:\Users\nimsi\OneDrive\Desktop\Stock data'
-output_directory = r"C:\Users\nimsi\OneDrive\Documents\New_age_ML\preprocessed4"
+output_directory = r"PreProcessed"
 
 # Ensure output directory exists
 os.makedirs(output_directory, exist_ok=True)
@@ -14,6 +15,70 @@ company_data = {}
 
 # Fetch both .xls and .xlsx files
 file_paths = glob(os.path.join(input_directory, '*.xls')) + glob(os.path.join(input_directory, '*.xlsx'))
+
+def compute_rsi(series, window=14):
+    """
+    Compute the RSI (Relative Strength Index) for a given price series.
+    RSI = 100 - [100 / (1 + (avg_gain / avg_loss))]
+    """
+    delta = series.diff()
+    # Separate positive and negative moves
+    up = delta.clip(lower=0)
+    down = -1 * delta.clip(upper=0)
+
+    # Calculate rolling means
+    ma_up = up.rolling(window=window, min_periods=window).mean()
+    ma_down = down.rolling(window=window, min_periods=window).mean()
+
+    # Avoid division by zero
+    rsi = 100 - 100 / (1 + (ma_up / ma_down))
+    return rsi
+
+def compute_macd(series, short_window=12, long_window=26, signal_window=9):
+    """
+    Compute MACD (Moving Average Convergence/Divergence).
+    Returns MACD line, Signal line, and Histogram.
+    """
+    ema_short = series.ewm(span=short_window, adjust=False).mean()
+    ema_long = series.ewm(span=long_window, adjust=False).mean()
+    macd_line = ema_short - ema_long
+    signal_line = macd_line.ewm(span=signal_window, adjust=False).mean()
+    macd_hist = macd_line - signal_line
+    return macd_line, signal_line, macd_hist
+
+def compute_bollinger_bands(series, window=20, num_std=2):
+    """
+    Compute Bollinger Bands using a simple moving average.
+    Returns the middle band (SMA), upper band, and lower band.
+    """
+    sma = series.rolling(window=window, min_periods=window).mean()
+    r_std = series.rolling(window=window, min_periods=window).std()
+    upper_band = sma + (r_std * num_std)
+    lower_band = sma - (r_std * num_std)
+    return sma, upper_band, lower_band
+
+def compute_atr(df, window=14):
+    """
+    Compute the ATR (Average True Range) for the given DataFrame.
+    Requires 'PRICE HIGH (Rs.)', 'PRICE LOW (Rs.)', and 'CLOSE PRICE (Rs.)'.
+    ATR = rolling mean of TR, where
+      TR = max( High-Low, abs(High-PrevClose), abs(Low-PrevClose) ).
+    """
+    # Make sure we have previous close
+    df['PrevClose'] = df['CLOSE PRICE (Rs.)'].shift(1)
+
+    # Calculate True Range
+    df['TR'] = df[['PRICE HIGH (Rs.)', 'PRICE LOW (Rs.)', 'PrevClose']].apply(
+        lambda row: max(
+            row['PRICE HIGH (Rs.)'] - row['PRICE LOW (Rs.)'],
+            abs(row['PRICE HIGH (Rs.)'] - row['PrevClose']),
+            abs(row['PRICE LOW (Rs.)'] - row['PrevClose'])
+        ), axis=1
+    )
+
+    # ATR is rolling mean of True Range
+    df['ATR'] = df['TR'].rolling(window=window, min_periods=window).mean()
+    return df['ATR']
 
 for file_path in file_paths:
     print(f"📂 Processing file: {file_path}")
@@ -73,26 +138,66 @@ for file_path in file_paths:
                 # Sort by 'TRADING DATE'
                 company_df = company_df.sort_values(by='TRADING DATE')
 
-                # Lagged close prices (1 to 10 days) using the 'CLOSE PRICE (Rs.)'
-                for lag in range(1, 11):  # Create lagged features for the first 10 days
+                # 1) Compute additional indicators BEFORE dropping any columns
+                # RSI (using 14-day window on the 'CLOSE PRICE (Rs.)')
+                company_df['RSI_14'] = compute_rsi(company_df['CLOSE PRICE (Rs.)'], window=14)
+
+                # MACD (12, 26, 9) - returns three columns: MACD_Line, MACD_Signal, MACD_Hist
+                macd_line, macd_signal, macd_hist = compute_macd(company_df['CLOSE PRICE (Rs.)'])
+                company_df['MACD_Line'] = macd_line
+                company_df['MACD_Signal'] = macd_signal
+                company_df['MACD_Hist'] = macd_hist
+
+                # Bollinger Bands (20-day, 2 std)
+                bb_mid, bb_upper, bb_lower = compute_bollinger_bands(company_df['CLOSE PRICE (Rs.)'], window=20, num_std=2)
+                company_df['BB_Mid'] = bb_mid
+                company_df['BB_Upper'] = bb_upper
+                company_df['BB_Lower'] = bb_lower
+
+                # Volume Change (difference in TRADE VOLUME (No.))
+                if 'TRADE VOLUME (No.)' in company_df.columns:
+                    company_df['Volume_Change'] = company_df['TRADE VOLUME (No.)'].diff()
+
+                # ATR (14-day)
+                if all(x in company_df.columns for x in ['PRICE HIGH (Rs.)', 'PRICE LOW (Rs.)', 'CLOSE PRICE (Rs.)']):
+                    company_df['ATR_14'] = compute_atr(company_df, window=14)
+                else:
+                    company_df['ATR_14'] = np.nan
+
+                # 2) Create lagged close prices for the first 30 days
+                for lag in range(1, 31):
                     company_df[f'CLOSE PRICE (Lag {lag})'] = company_df['CLOSE PRICE (Rs.)'].shift(lag)
 
-                # Moving Averages (7-day, 14-day, 30-day)
-                company_df['MA_7'] = company_df['CLOSE PRICE (Rs.)'].rolling(window=7, min_periods=1).mean()
-                company_df['MA_14'] = company_df['CLOSE PRICE (Rs.)'].rolling(window=14, min_periods=1).mean()
-                company_df['MA_30'] = company_df['CLOSE PRICE (Rs.)'].rolling(window=30, min_periods=1).mean()
+                # 3) Compute moving averages based on the lag features:
+                # MA_7: Average of Lag 1 to Lag 7
+                # MA_14: Average of Lag 1 to Lag 14
+                # MA_30: Average of Lag 1 to Lag 30
+                company_df['MA_7'] = company_df[[f'CLOSE PRICE (Lag {i})' for i in range(1, 8)]].mean(axis=1)
+                company_df['MA_14'] = company_df[[f'CLOSE PRICE (Lag {i})' for i in range(1, 15)]].mean(axis=1)
+                company_df['MA_30'] = company_df[[f'CLOSE PRICE (Lag {i})' for i in range(1, 31)]].mean(axis=1)
 
-                # Drop rows with NaN values caused by shifting or moving averages
-                company_df = company_df.dropna(
-                    subset=[f'CLOSE PRICE (Lag {lag})' for lag in range(1, 11)] + ['MA_7', 'MA_14', 'MA_30']
-                )
+                # 4) Drop rows with NaN values caused by shifting or rolling computations
+                required_cols = [f'CLOSE PRICE (Lag {lag})' for lag in range(1, 31)] + [
+                    'MA_7', 'MA_14', 'MA_30',
+                    'RSI_14', 'MACD_Line', 'MACD_Signal', 'MACD_Hist',
+                    'BB_Mid', 'BB_Upper', 'BB_Lower',
+                    'ATR_14'
+                ]
+                if 'Volume_Change' in company_df.columns:
+                    required_cols.append('Volume_Change')
 
-                # Remove unwanted columns
-                columns_to_remove = ['PRICE HIGH (Rs.)', 'PRICE LOW (Rs.)', 'CLOSE PRICE (Rs.)',
-                                     'TRADE VOLUME (No.)', 'SHARE VOLUME (No.)', 'TURNOVER (Rs.)']
-                company_df.drop(columns=[col for col in columns_to_remove if col in company_df.columns], inplace=True)
+                company_df = company_df.dropna(subset=required_cols)
 
-                # Store data for each company, appending to existing data if necessary
+                # 5) Remove unwanted columns
+                columns_to_remove = [
+                    'PRICE HIGH (Rs.)', 'PRICE LOW (Rs.)', 'CLOSE PRICE (Rs.)',
+                    'TRADE VOLUME (No.)', 'SHARE VOLUME (No.)', 'TURNOVER (Rs.)',
+                    'PrevClose', 'TR'
+                ]
+                cols_to_drop = [c for c in columns_to_remove if c in company_df.columns]
+                company_df.drop(columns=cols_to_drop, inplace=True, errors='ignore')
+
+                # 6) Store data for each company, appending to existing data if necessary
                 if company in company_data:
                     company_data[company] = pd.concat([company_data[company], company_df], ignore_index=True)
                 else:

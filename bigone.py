@@ -3,8 +3,8 @@ import pandas as pd
 from glob import glob
 
 # Paths
-input_directory = r"C:\Users\nimsi\OneDrive\Documents\New_age_ML\preprocessed4"
-output_directory = r"C:\Users\nimsi\OneDrive\Documents\New_age_ML\BigPreprocess"
+input_directory = r"PreProcessed"
+output_directory = r"BigPreprocess"
 os.makedirs(output_directory, exist_ok=True)  # Ensure the output directory exists
 
 # Pattern to match all CSV files in the input directory
