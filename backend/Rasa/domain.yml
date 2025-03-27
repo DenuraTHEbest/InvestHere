@@ -11,6 +11,8 @@ intents:
   - analyze_company_stock
   - analyze_aspi_specific_date
   - thank_you
+  - how_are_you
+  - who_are_you
 
 entities:
   - company
@@ -37,7 +39,10 @@ responses:
     - text: "Goodbye! Feel free to return anytime."
   utter_thank_you:
     - text: "You're welcome! Let me know if you need anything else."
-  
+  utter_how_are_you:
+    - text: "I'm doing great, thank you for asking! How can I assist you today?"
+  utter_who_are_you:
+    - text: "I'm your stock market assistant, here to help you with market analysis and insights."
 
 actions:
   - action_analyze_sentiment
