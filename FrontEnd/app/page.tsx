@@ -1,27 +1,187 @@
 "use client";
 
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowUpIcon, ArrowDownIcon, TrendingUpIcon, LineChartIcon, MessageCircleIcon, SearchIcon } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useState, useEffect } from 'react';
+import { ArrowUpIcon, ArrowDownIcon, LineChartIcon, TrendingUpIcon, MessageCircleIcon, SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/theme-toggle";
 import Link from 'next/link';
-import { useState , useEffect} from 'react';
 
-// Mock data for sentiment analysis
-/*const sentimentData = {
-  daily: [
-    { name: 'Positive', value: 60 },
-    { name: 'Neutral', value: 25 },
-    { name: 'Negative', value: 15 },
-  ],
-  weekly: [
-    { name: 'Positive', value: 55 },
-    { name: 'Neutral', value: 30 },
-    { name: 'Negative', value: 15 },
-  ],
-};*/
+// Convert the date to a readable format
+function formatDate(date: string) {
+  return new Date(date).toLocaleDateString();
+}
+
+// Convert a date string (e.g., "2024-03-13") to "13/3/2024"
+function formatDateToDDMMYYYY(dateString: string): string {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+// Define the type for the ASPI data
+type ASPIData = {
+  date: string;
+  actual: number | null;
+  predicted: number;
+};
+
+// ASPI Prediction Component
+function ASPIPrediction() {
+  const [aspiData, setAspiData] = useState({
+    daily: {
+      current: 0,
+      predicted: 0,
+      change: 0,
+      date: '',
+    },
+  });
+
+  useEffect(() => {
+    const apiUrl = 'http://localhost:5050';
+    const today = new Date("2024-05-16");
+
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        console.log("Fetched data from backend:", data);
+
+        const transformedData = data;
+
+        const lastActualData = [...transformedData].reverse().find(item => item.actual !== null);
+        const lastActualDate = lastActualData?.date || null;
+        const lastActualValue = lastActualData?.actual || 0;
+
+        const nextTradingDay = transformedData.find((item: ASPIData) => item.date > lastActualDate && item.predicted !== null);
+        const nextTradingDayDate = nextTradingDay?.date || null;
+        const nextTradingDayPredicted = nextTradingDay?.predicted || 0;
+
+        const increment = lastActualValue
+          ? parseFloat(((nextTradingDayPredicted - lastActualValue) / lastActualValue * 100).toFixed(2))
+          : 0;
+
+        setAspiData({
+          daily: {
+            current: lastActualValue,
+            predicted: nextTradingDayPredicted,
+            change: increment,
+            date: nextTradingDayDate,
+          },
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching ASPI data:', error);
+      });
+  }, []);
+
+  return (
+    <Card className="col-span-full md:col-span-1">
+      <CardHeader>
+        <CardTitle>ASPI Prediction</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Tabs defaultValue="daily">
+          <TabsList className="mb-4">
+            <TabsTrigger value="daily">Daily</TabsTrigger>
+          </TabsList>
+          <TabsContent value="daily">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-2xl font-bold">
+                    {aspiData.daily.predicted !== undefined ? aspiData.daily.predicted.toFixed(2) : "--"}
+                  </p>
+                  <div className={`flex items-center gap-1 ${aspiData.daily.change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                    {aspiData.daily.change >= 0 ? (
+                      <ArrowUpIcon className="h-4 w-4" />
+                    ) : (
+                      <ArrowDownIcon className="h-4 w-4" />
+                    )}
+                    <span>{Math.abs(aspiData.daily.change).toFixed(2)}%</span>
+                  </div>
+                </div>
+                <LineChartIcon className="h-12 w-12 text-muted-foreground" />
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Prediction for: {aspiData.daily.date}
+              </p>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </CardContent>
+    </Card>
+  );
+}
+
+// ASPI Progress Component
+function ASPIProgress() {
+  const [aspiprogressData, setAspiProgressData] = useState<ASPIData[]>([]);
+
+  useEffect(() => {
+    const apiUrl = 'http://localhost:5050';
+    const today = new Date("2024-05-16");
+
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        console.log("Fetched data from backend:", data);
+
+        const transformedData = data;
+
+        const lastActualData = [...transformedData].reverse().find(item => item.actual !== null);
+        const lastActualDate = lastActualData?.date || null;
+
+        const graphData = transformedData.map((item: ASPIData) => ({
+          date: formatDateToDDMMYYYY(item.date),
+          actual: item.date <= lastActualDate ? item.actual : null,
+          predicted: parseFloat(item.predicted.toFixed(2)),
+        }));
+
+        setAspiProgressData(graphData);
+      })
+      .catch(error => {
+        console.error('Error fetching ASPI data:', error);
+      });
+  }, []);
+
+  return (
+    <Card className="col-span-full md:col-span-2">
+      <CardHeader>
+        <CardTitle>ASPI Progress</CardTitle>
+      </CardHeader>
+      <CardContent className="h-[300px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={aspiprogressData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis domain={['auto', 'auto']} />
+            <Tooltip />
+            <Line 
+              type="monotone" 
+              dataKey="actual" 
+              stroke="hsl(var(--chart-2))" 
+              strokeWidth={2}
+              name="Actual"
+            />
+            <Line 
+              type="monotone" 
+              dataKey="predicted" 
+              stroke="hsl(var(--chart-3))" 
+              strokeWidth={2}
+              name="Predicted"
+              strokeDasharray="5 5"
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </CardContent>
+    </Card>
+  );
+}
+
 // Define the type for the sentiment data
 type SentimentData = {
   date: string;
@@ -33,98 +193,159 @@ type SentimentData = {
 
 const SENTIMENT_COLORS = ['#10B981', '#6B7280', '#EF4444'];
 
-const lineChartData = Array.from({ length: 30 }, (_, i) => ({
-  date: new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000).toLocaleDateString(),
-  sentiment: Math.random() * 2 - 1,
-}));
-
-const aspiData = {
-  daily: {
-    current: 10567.89,
-    predicted: 10800.45,
-    change: 2.34,
-    date: new Date().toLocaleDateString(),
-  },
-  weekly: {
-    current: 10567.89,
-    predicted: 11200.30,
-    change: 5.98,
-    date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString(),
-  }
+type TimeframeData = {
+  rawData: SentimentData[];
+  pieData: { name: string; value: number }[];
+  lineData: { date: string; sentiment: number }[];
 };
 
-const stockPredictions = [
-  { name: "SAMP.N", current: 245.50, predicted: 252.30, change: 2.77, performance: 95 },
-  { name: "DIAL.N", current: 89.75, predicted: 85.20, change: -5.07, performance: 82 },
-  { name: "COMB.N", current: 156.25, predicted: 162.80, change: 4.19, performance: 88 },
-  { name: "VONE.N", current: 312.90, predicted: 318.45, change: 1.77, performance: 91 },
-].sort((a, b) => b.performance - a.performance);
+// PieChart and LineChart Components
+const PieChartContainer = ({ data }: { data: { name: string; value: number }[] }) => (
+  <div className="h-[300px]">
+    <ResponsiveContainer width="100%" height="100%">
+      <PieChart>
+        <Pie
+          data={data}
+          cx="50%"
+          cy="50%"
+          innerRadius={60}
+          outerRadius={80}
+          paddingAngle={5}
+          dataKey="value"
+          label
+        >
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={SENTIMENT_COLORS[index]} />
+          ))}
+        </Pie>
+        <Tooltip />
+        <Legend />
+      </PieChart>
+    </ResponsiveContainer>
+  </div>
+);
 
-const generateStockData = (basePrice: number) => {
-  return Array.from({ length: 30 }, (_, i) => ({
-    date: new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000).toLocaleDateString(),
-    actual: basePrice + Math.random() * 20 - 10,
-    predicted: basePrice + Math.random() * 20 - 10,
-  }));
-};
+const LineChartContainer = ({ data }: { data: { date: string; sentiment: number }[] }) => (
+  <div className="h-[300px]">
+    <ResponsiveContainer width="100%" height="100%">
+      <LineChart data={data}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="date" />
+        <YAxis domain={[-1, 1]} />
+        <Tooltip />
+        <Legend />
+        <Line
+          type="monotone"
+          dataKey="sentiment"
+          name="Average Score"
+          stroke="#3b82f6"
+          strokeWidth={2}
+          activeDot={{ r: 8 }}
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  </div>
+);
 
-const aspiprogressData = Array.from({ length: 30 }, (_, i) => ({
-  date: new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000).toLocaleDateString(),
-  actual: 10000 + Math.random() * 1000,
-  predicted: 10000 + Math.random() * 1000,
-}));
-
-const stockHistoricalData = {
-  "SAMP.N": generateStockData(245),
-  "DIAL.N": generateStockData(90),
-  "COMB.N": generateStockData(156),
-  "VONE.N": generateStockData(313),
-};
-
+// Main Component
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedTimeframe, setSelectedTimeframe] = useState<'daily' | 'weekly'>('daily');
-  const [data, setData] = useState<SentimentData[]>([]);
-  const [lineChartData, setLineChartData] = useState<{ date: string; sentiment: number }[]>([]);
-  const [sentimentSummary, setSentimentSummary] = useState<{ name: string; value: number }[]>([]);
+  const [activeTab, setActiveTab] = useState<'daily' | 'weekly'>('daily');
+  const [dailyData, setDailyData] = useState<TimeframeData>({ 
+    rawData: [], 
+    pieData: [], 
+    lineData: [] 
+  });
+  const [weeklyData, setWeeklyData] = useState<TimeframeData>({ 
+    rawData: [], 
+    pieData: [], 
+    lineData: [] 
+  });
+  const [isLoading, setIsLoading] = useState({
+    daily: true,
+    weekly: true
+  });
+
+  const stockPredictions = [
+    { name: "SAMP.N", current: 245.50, predicted: 252.30, change: 2.77, performance: 95 },
+    { name: "DIAL.N", current: 89.75, predicted: 85.20, change: -5.07, performance: 82 },
+    { name: "COMB.N", current: 156.25, predicted: 162.80, change: 4.19, performance: 88 },
+    { name: "VONE.N", current: 312.90, predicted: 318.45, change: 1.77, performance: 91 },
+  ].sort((a, b) => b.performance - a.performance);
+
   const filteredStocks = stockPredictions.filter(stock => 
     stock.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const stockHistoricalData: Record<string, { date: string; actual: number; predicted: number }[]> = {
+    "SAMP.N": [
+      { date: "2023-10-01", actual: 240, predicted: 245 },
+      { date: "2023-10-02", actual: 245, predicted: 250 },
+    ],
+    "DIAL.N": [
+      { date: "2023-10-01", actual: 90, predicted: 88 },
+      { date: "2023-10-02", actual: 89, predicted: 87 },
+    ],
+    "COMB.N": [
+      { date: "2023-10-01", actual: 155, predicted: 160 },
+      { date: "2023-10-02", actual: 156, predicted: 162 },
+    ],
+    "VONE.N": [
+      { date: "2023-10-01", actual: 310, predicted: 315 },
+      { date: "2023-10-02", actual: 312, predicted: 318 },
+    ],
+  };
+
+  // Fetch both datasets on initial load
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAllData = async () => {
       try {
-        const endpoint = selectedTimeframe === 'daily'
-          ? 'http://127.0.0.1:5000/get-daily-sentiment'
-          : 'http://127.0.0.1:5000/get-weekly-sentiment';
+        // Fetch daily data
+        const dailyResponse = await fetch('http://127.0.0.1:5000/get-daily-sentiment');
+        const dailyResult: SentimentData[] = await dailyResponse.json();
+        processData(dailyResult, 'daily');
 
-        const response = await fetch(endpoint);
-        const result: SentimentData[] = await response.json();
-        setData(result);
-
-        // Aggregate sentiment data for pie chart
-        const summary = [
-          { name: "Positive", value: result.reduce((sum, d) => sum + d.positive, 0) },
-          { name: "Neutral", value: result.reduce((sum, d) => sum + d.neutral, 0) },
-          { name: "Negative", value: result.reduce((sum, d) => sum + d.negative, 0) },
-        ];
-        setSentimentSummary(summary);
-
-        // Prepare data for line chart
-        const lineData = result.map((d) => ({
-          date: new Date(d.date).toLocaleDateString(),
-          sentiment: d.weighted_score,
-        }));
-        setLineChartData(lineData);
-
+        // Fetch weekly data
+        const weeklyResponse = await fetch('http://127.0.0.1:5000/get-weekly-sentiment');
+        const weeklyResult: SentimentData[] = await weeklyResponse.json();
+        processData(weeklyResult, 'weekly');
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
-    fetchData();
-  }, [selectedTimeframe]); // 👈 Trigger when `selectedTimeframe` changes
+    fetchAllData();
+  }, []);
 
+  const processData = (rawData: SentimentData[], timeframe: 'daily' | 'weekly') => {
+    const sortedData = [...rawData].sort((a, b) => 
+      a.date.localeCompare(b.date)
+    );
+
+    const pieData = [
+      { name: "Positive", value: sortedData.reduce((sum, d) => sum + d.positive, 0) },
+      { name: "Neutral", value: sortedData.reduce((sum, d) => sum + d.neutral, 0) },
+      { name: "Negative", value: sortedData.reduce((sum, d) => sum + d.negative, 0) },
+    ];
+
+    const lineData = sortedData.map((d) => ({
+      date: timeframe === 'daily' 
+        ? new Date(d.date).toLocaleDateString() 
+        : d.date,
+      sentiment: d.weighted_score,
+    }));
+
+    if (timeframe === 'daily') {
+      setDailyData({ rawData: sortedData, pieData, lineData });
+      setIsLoading(prev => ({ ...prev, daily: false }));
+    } else {
+      setWeeklyData({ rawData: sortedData, pieData, lineData });
+      setIsLoading(prev => ({ ...prev, weekly: false }));
+    }
+  };
+
+  const currentData = activeTab === 'daily' ? dailyData : weeklyData;
+  const currentLoading = activeTab === 'daily' ? isLoading.daily : isLoading.weekly;
 
   return (
     <div className="min-h-screen bg-background font-sans">
@@ -157,204 +378,59 @@ export default function Home() {
       </section>
 
       <main className="container mx-auto px-4 py-8">
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {/* Sentiment Analysis Cards */}
-          {/* Sentiment Analysis Card */}
+        <div className="grid gap-6">
+          {/* Market Sentiment Analysis */}
           <Card className="col-span-full">
             <CardHeader>
               <CardTitle>Market Sentiment Analysis</CardTitle>
             </CardHeader>
             <CardContent>
-              <Tabs defaultValue="daily" className="w-full">
+              <Tabs 
+                defaultValue="daily" 
+                className="w-full"
+                onValueChange={(value) => setActiveTab(value as 'daily' | 'weekly')}
+              >
                 <TabsList>
-                  <TabsTrigger 
-                    value="daily" 
-                    onClick={() => setSelectedTimeframe('daily')}
-                  >
-                    Daily
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="weekly" 
-                    onClick={() => setSelectedTimeframe('weekly')}
-                  >
-                    Weekly
-                  </TabsTrigger>
-                </TabsList>
-                
-                {/* Daily Sentiment */}
-                <TabsContent value="daily" className="space-y-4">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {/* Pie Chart */}
-                    <div className="h-[300px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={sentimentSummary}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={60}
-                            outerRadius={80}
-                            paddingAngle={5}
-                            dataKey="value"
-                          >
-                            {sentimentSummary.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={SENTIMENT_COLORS[index]} />
-                            ))}
-                          </Pie>
-                          <Tooltip />
-                        </PieChart>
-                      </ResponsiveContainer>
-                    </div>
-
-                    {/* Line Chart */}
-                    <div className="h-[300px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={lineChartData}>
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="date" />
-                          <YAxis domain={[-1, 1]} />
-                          <Tooltip />
-                          <Line
-                            type="monotone"
-                            dataKey="sentiment"
-                            stroke="#3b82f6"
-                            strokeWidth={2}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </div>
-                </TabsContent>
-
-                {/* Weekly Sentiment */}
-                <TabsContent value="weekly" className="space-y-4">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {/* Pie Chart */}
-                    <div className="h-[300px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={sentimentSummary}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={60}
-                            outerRadius={80}
-                            paddingAngle={5}
-                            dataKey="value"
-                          >
-                            {sentimentSummary.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={SENTIMENT_COLORS[index]} />
-                            ))}
-                          </Pie>
-                          <Tooltip />
-                        </PieChart>
-                      </ResponsiveContainer>
-                    </div>
-
-                    {/* Line Chart */}
-                    <div className="h-[300px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={lineChartData}>
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="date" />
-                          <YAxis domain={[-1, 1]} />
-                          <Tooltip />
-                          <Line
-                            type="monotone"
-                            dataKey="sentiment"
-                            stroke="#3b82f6"
-                            strokeWidth={2}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-          </Card>
-
-          {/* ASPI Prediction Cards */}
-          <Card className="col-span-full md:col-span-1">
-            <CardHeader>
-              <CardTitle>ASPI Prediction</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Tabs defaultValue="daily">
-                <TabsList className="mb-4">
                   <TabsTrigger value="daily">Daily</TabsTrigger>
                   <TabsTrigger value="weekly">Weekly</TabsTrigger>
                 </TabsList>
-                <TabsContent value="daily">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-2xl font-bold">{aspiData.daily.predicted.toFixed(2)}</p>
-                        <div className="flex items-center gap-1 text-green-500">
-                          <ArrowUpIcon className="h-4 w-4" />
-                          <span>+{aspiData.daily.change}%</span>
-                        </div>
-                      </div>
-                      <LineChartIcon className="h-12 w-12 text-muted-foreground" />
+                
+                <TabsContent value="daily" className="space-y-4">
+                  {currentLoading ? (
+                    <div className="flex justify-center items-center h-64">
+                      <p>Loading daily data...</p>
                     </div>
-                    <p className="text-sm text-muted-foreground">
-                      Prediction for: {aspiData.daily.date}
-                    </p>
-                  </div>
+                  ) : (
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <PieChartContainer data={dailyData.pieData} />
+                      <LineChartContainer data={dailyData.lineData} />
+                    </div>
+                  )}
                 </TabsContent>
-                <TabsContent value="weekly">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-2xl font-bold">{aspiData.weekly.predicted.toFixed(2)}</p>
-                        <div className="flex items-center gap-1 text-green-500">
-                          <ArrowUpIcon className="h-4 w-4" />
-                          <span>+{aspiData.weekly.change}%</span>
-                        </div>
-                      </div>
-                      <LineChartIcon className="h-12 w-12 text-muted-foreground" />
+
+                <TabsContent value="weekly" className="space-y-4">
+                  {currentLoading ? (
+                    <div className="flex justify-center items-center h-64">
+                      <p>Loading weekly data...</p>
                     </div>
-                    <p className="text-sm text-muted-foreground">
-                      Prediction for: {aspiData.weekly.date}
-                    </p>
-                  </div>
+                  ) : (
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <PieChartContainer data={weeklyData.pieData} />
+                      <LineChartContainer data={weeklyData.lineData} />
+                    </div>
+                  )}
                 </TabsContent>
               </Tabs>
             </CardContent>
           </Card>
 
-          {/* ASPI progress over time Chart*/}
-          <Card className="col-span-full md:col-span-2">
-            <CardHeader>
-              <CardTitle>ASPI Progress</CardTitle>
-            </CardHeader>
-            <CardContent className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={aspiprogressData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis domain={['auto', 'auto']} />
-                  <Tooltip />
-                  <Line 
-                    type="monotone" 
-                    dataKey="actual" 
-                    stroke="hsl(var(--chart-2))" 
-                    strokeWidth={2}
-                    name="Actual"
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="predicted" 
-                    stroke="hsl(var(--chart-3))" 
-                    strokeWidth={2}
-                    name="Predicted"
-                    strokeDasharray="5 5"
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
+          {/* ASPI Prediction and Progress as separate cards side by side */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <ASPIPrediction />
+            <ASPIProgress />
+            {/* Placeholder for alignment - this will be empty but ensures the grid layout works */}
+            <div className="hidden md:block"></div>
+          </div>
 
           {/* Best Performing Stocks */}
           <Card className="col-span-full">
@@ -418,7 +494,7 @@ export default function Home() {
                 {filteredStocks.map((stock) => (
                   <TabsContent key={stock.name} value={stock.name} className="h-[300px]">
                     <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={stockHistoricalData[stock.name]}>
+                      <LineChart data={stockHistoricalData[stock.name] || []}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="date" />
                         <YAxis domain={['auto', 'auto']} />

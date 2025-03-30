@@ -148,34 +148,36 @@ def get_daily_sentiment():
 # Endpoint to get weekly sentiment data
 @app.route('/get-weekly-sentiment', methods=['GET'])
 def get_weekly_sentiment():
-    # Find the latest available date in the database
-    latest_doc = test_collection.find_one(
-        {}, 
-        sort=[('date', DESCENDING)]
-    )
-
-    if latest_doc:
-        latest_date = latest_doc['date']
-        start_of_week = latest_date - timedelta(days=latest_date.weekday())
-        end_of_week = start_of_week + timedelta(days=7)
-
-        data = weekly_scores_collection.find({
-            'date': {'$gte': start_of_week, '$lt': end_of_week}
-        })
-
+    try:
+        # Get all weekly data sorted by week in descending order
+        weekly_data = weekly_scores_collection.find().sort('week', -1)
+        
         result = []
-        for doc in data:
+        for doc in weekly_data:
+            # Parse the week string to get start date (first part before '/')
+            week_start_str = doc['week'].split('/')[0]
+            week_start_date = datetime.strptime(week_start_str, '%Y-%m-%d')
+            
             result.append({
-                'week': doc['date'].strftime('%Y-%m-%d'),
+                'date': doc['week'],  # Keep the original week range string
+                'week_start': week_start_date.isoformat(),  # Add parsed start date
                 'positive': doc['positive'],
                 'neutral': doc['neutral'],
                 'negative': doc['negative'],
                 'weighted_score': doc['weighted_score']
             })
-
+        
+        # Sort by week_start date in descending order
+        result.sort(key=lambda x: x['week_start'], reverse=True)
+        
         return jsonify(result)
-
-    return jsonify([])  # Return empty list if no data is found
+    
+    except Exception as e:
+        print(f"Error fetching weekly sentiment: {str(e)}")
+        return jsonify({
+            'error': 'Failed to fetch weekly sentiment data',
+            'details': str(e)
+        }), 500  # Return empty list if no data is found
 
     
 if __name__ == '__main__':
