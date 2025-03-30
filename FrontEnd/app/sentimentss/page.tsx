@@ -1,6 +1,6 @@
 "use client";
 
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Legend} from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useEffect } from 'react';
@@ -98,12 +98,14 @@ export default function SentimentAnalysis() {
                             outerRadius={80}
                             paddingAngle={5}
                             dataKey="value"
+                            label
                           >
                             {sentimentSummary.map((entry, index) => (
                               <Cell key={`cell-${index}`} fill={SENTIMENT_COLORS[index]} />
                             ))}
                           </Pie>
                           <Tooltip />
+                          <Legend/>
                         </PieChart>
                       </ResponsiveContainer>
                     </div>
@@ -119,6 +121,7 @@ export default function SentimentAnalysis() {
                           <Line
                             type="monotone"
                             dataKey="sentiment"
+                            name="Sentiment Score"
                             stroke="#3b82f6"
                             strokeWidth={2}
                           />

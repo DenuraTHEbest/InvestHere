@@ -1,6 +1,6 @@
 "use client";
 
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowUpIcon, ArrowDownIcon, LineChartIcon } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -345,12 +345,14 @@ export default function Home() {
                             outerRadius={80}
                             paddingAngle={5}
                             dataKey="value"
+                            label
                           >
                             {sentimentSummary.map((entry, index) => (
                               <Cell key={`cell-${index}`} fill={SENTIMENT_COLORS[index]} />
                             ))}
                           </Pie>
                           <Tooltip />
+                          <Legend/>
                         </PieChart>
                       </ResponsiveContainer>
                     </div>
@@ -363,9 +365,11 @@ export default function Home() {
                           <XAxis dataKey="date" />
                           <YAxis domain={[-1, 1]} />
                           <Tooltip />
+                          <Legend/>
                           <Line
                             type="monotone"
                             dataKey="sentiment"
+                            name='sentiment score'
                             stroke="#3b82f6"
                             strokeWidth={2}
                           />
