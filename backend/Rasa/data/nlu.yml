@@ -6,31 +6,45 @@ nlu:
     - Hi there
     - Hey bot!
     - Good morning
-    - How are you?
     - Hi
     - Hey
-    - How’s it going?
-    - What’s up?
     - Good afternoon
     - Good evening
-    - How are you doing?
-    - Hey, how’s everything?
-    - Howdy
-    - What’s good?
-    - How’s life?
-    - How’s your day been?
     - Greetings
     - Salutations
-    - What’s happening?
     - Howdy, bot!
     - Yo
     - Wassup?
     - Hello there!
     - Morning!
-    - Hi, how are you?
-    - What’s new?
-    - How’s your day going?
-    - What’s going on?
+
+- intent: how_are_you
+  examples: |
+    - How are you?
+    - How's it going?
+    - How are you doing?
+    - How's everything?
+    - How's life?
+    - How are things?
+    - What's up?
+    - How are you feeling?
+    - How are you today?
+    - How's your day going?
+    - How are you doing today?
+    - How's everything going?
+
+- intent: who_are_you
+  examples: |
+    - Who are you?
+    - What are you?
+    - Who's this?
+    - What is your name?
+    - Who is this?
+    - Can you tell me who you are?
+    - Who am I talking to?
+    - What are you called?
+    - What should I call you?
+    - Who exactly are you?
 
 - intent: goodbye
   examples: |
