@@ -54,12 +54,12 @@ def compute_and_store_scores(processed_entries):
         df = pd.DataFrame(processed_entries)
         df['date'] = pd.to_datetime(df['date'])
 
-        # ✅ Step 1: Daily Sentiment Counts
+        #Daily Sentiment Counts
         daily_counts = df.groupby('date')['sentiment'].value_counts().unstack(fill_value=0)
         daily_counts = daily_counts.rename(columns={'positive': 'positive', 'neutral': 'neutral', 'negative': 'negative'})
         daily_counts['total'] = daily_counts.sum(axis=1)
 
-        # ✅ Step 2: Optimize Weights
+        #Optimize Weights
         def compute_daily_scores(weights):
             weight_map = {'positive': weights[0], 'neutral': weights[1], 'negative': weights[2]}
             weighted_scores = df['sentiment'].map(weight_map)
@@ -75,11 +75,11 @@ def compute_and_store_scores(processed_entries):
         result = minimize(loss_function, initial_weights, bounds=[(-2, 2), (-1, 1), (-2, 0)])
         optimal_weights = result.x
 
-        # ✅ Step 3: Compute Weighted Scores
+        #Compute Weighted Scores
         weight_map = {'positive': optimal_weights[0], 'neutral': optimal_weights[1], 'negative': optimal_weights[2]}
         daily_counts['Weighted_Score'] = df['sentiment'].map(weight_map).groupby(df['date']).mean()
 
-        # ✅ Step 4: Save to Database (Daily)
+        #Save to Database (Daily)
         for date, row in daily_counts.iterrows():
             daily_scores_collection.update_one(
                 {'date': date},
@@ -94,10 +94,10 @@ def compute_and_store_scores(processed_entries):
                 upsert=True
             )
 
-        # ✅ Step 5: Compute Weekly Scores
+        #Compute Weekly Scores
         weekly_scores = daily_counts['Weighted_Score'].resample('W-MON').mean()
 
-        # ✅ Step 6: Save to Database (Weekly)
+        #Save to Database (Weekly)
         for date, score in weekly_scores.items():
             start_of_week = date - timedelta(days=6)
             weekly_scores_collection.update_one(

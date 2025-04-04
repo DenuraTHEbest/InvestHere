@@ -1,11 +1,10 @@
 "use client";
 
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useEffect } from 'react';
 
-// Define the type for the sentiment data
 type SentimentData = {
   date: string;
   positive: number;
@@ -16,161 +15,123 @@ type SentimentData = {
 
 const SENTIMENT_COLORS = ['#10B981', '#6B7280', '#EF4444'];
 
+type TimeframeData = {
+  rawData: SentimentData[];
+  pieData: { name: string; value: number }[];
+  lineData: { date: string; sentiment: number }[];
+};
+
 export default function SentimentAnalysis() {
-  const [selectedTimeframe, setSelectedTimeframe] = useState<'daily' | 'weekly'>('daily');
-  const [data, setData] = useState<SentimentData[]>([]);
-  const [lineChartData, setLineChartData] = useState<{ date: string; sentiment: number }[]>([]);
-  const [sentimentSummary, setSentimentSummary] = useState<{ name: string; value: number }[]>([]);
+  const [activeTab, setActiveTab] = useState<'daily' | 'weekly'>('daily');
+  const [dailyData, setDailyData] = useState<TimeframeData>({ 
+    rawData: [], 
+    pieData: [], 
+    lineData: [] 
+  });
+  const [weeklyData, setWeeklyData] = useState<TimeframeData>({ 
+    rawData: [], 
+    pieData: [], 
+    lineData: [] 
+  });
+  const [isLoading, setIsLoading] = useState({
+    daily: true,
+    weekly: true
+  });
 
-  // Fetch data from Flask API
+  // Fetch both datasets on initial load
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAllData = async () => {
       try {
-        const endpoint = selectedTimeframe === 'daily'
-          ? 'http://127.0.0.1:5000/get-daily-sentiment'
-          : 'http://127.0.0.1:5000/get-weekly-sentiment';
+        // Fetch daily data
+        const dailyResponse = await fetch('http://127.0.0.1:5000/get-daily-sentiment');
+        const dailyResult: SentimentData[] = await dailyResponse.json();
+        processData(dailyResult, 'daily');
 
-        const response = await fetch(endpoint);
-        const result: SentimentData[] = await response.json();
-        setData(result);
-
-        // Aggregate sentiment data for pie chart
-        const summary = [
-          { name: "Positive", value: result.reduce((sum, d) => sum + d.positive, 0) },
-          { name: "Neutral", value: result.reduce((sum, d) => sum + d.neutral, 0) },
-          { name: "Negative", value: result.reduce((sum, d) => sum + d.negative, 0) },
-        ];
-        setSentimentSummary(summary);
-
-        // Prepare data for line chart
-        const lineData = result.map((d) => ({
-          date: new Date(d.date).toLocaleDateString(),
-          sentiment: d.weighted_score,
-        }));
-        setLineChartData(lineData);
-
+        // Fetch weekly data
+        const weeklyResponse = await fetch('http://127.0.0.1:5000/get-weekly-sentiment');
+        const weeklyResult: SentimentData[] = await weeklyResponse.json();
+        processData(weeklyResult, 'weekly');
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
-    fetchData();
-  }, [selectedTimeframe]); // 👈 Trigger when `selectedTimeframe` changes
+    fetchAllData();
+  }, []);
+
+  const processData = (rawData: SentimentData[], timeframe: 'daily' | 'weekly') => {
+    const sortedData = [...rawData].sort((a, b) => 
+      a.date.localeCompare(b.date)
+    );
+
+    const pieData = [
+      { name: "Positive", value: sortedData.reduce((sum, d) => sum + d.positive, 0) },
+      { name: "Neutral", value: sortedData.reduce((sum, d) => sum + d.neutral, 0) },
+      { name: "Negative", value: sortedData.reduce((sum, d) => sum + d.negative, 0) },
+    ];
+
+    const lineData = sortedData.map((d) => ({
+      date: timeframe === 'daily' 
+        ? new Date(d.date).toLocaleDateString() 
+        : d.date, // Use the week string directly for weekly data
+      sentiment: d.weighted_score,
+    }));
+
+    if (timeframe === 'daily') {
+      setDailyData({ rawData: sortedData, pieData, lineData });
+      setIsLoading(prev => ({ ...prev, daily: false }));
+    } else {
+      setWeeklyData({ rawData: sortedData, pieData, lineData });
+      setIsLoading(prev => ({ ...prev, weekly: false }));
+    }
+  };
+
+  const currentData = activeTab === 'daily' ? dailyData : weeklyData;
+  const currentLoading = activeTab === 'daily' ? isLoading.daily : isLoading.weekly;
 
   return (
     <div className="min-h-screen bg-background font-sans">
       <main className="container mx-auto px-4 py-8">
         <div className="grid gap-6">
-          {/* Sentiment Analysis Card */}
           <Card className="col-span-full">
             <CardHeader>
               <CardTitle>Market Sentiment Analysis</CardTitle>
             </CardHeader>
             <CardContent>
-              <Tabs defaultValue="daily" className="w-full">
+              <Tabs 
+                defaultValue="daily" 
+                className="w-full"
+                onValueChange={(value) => setActiveTab(value as 'daily' | 'weekly')}
+              >
                 <TabsList>
-                  <TabsTrigger 
-                    value="daily" 
-                    onClick={() => setSelectedTimeframe('daily')}
-                  >
-                    Daily
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="weekly" 
-                    onClick={() => setSelectedTimeframe('weekly')}
-                  >
-                    Weekly
-                  </TabsTrigger>
+                  <TabsTrigger value="daily">Daily</TabsTrigger>
+                  <TabsTrigger value="weekly">Weekly</TabsTrigger>
                 </TabsList>
                 
-                {/* Daily Sentiment */}
                 <TabsContent value="daily" className="space-y-4">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {/* Pie Chart */}
-                    <div className="h-[300px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={sentimentSummary}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={60}
-                            outerRadius={80}
-                            paddingAngle={5}
-                            dataKey="value"
-                          >
-                            {sentimentSummary.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={SENTIMENT_COLORS[index]} />
-                            ))}
-                          </Pie>
-                          <Tooltip />
-                        </PieChart>
-                      </ResponsiveContainer>
+                  {currentLoading ? (
+                    <div className="flex justify-center items-center h-64">
+                      <p>Loading daily data...</p>
                     </div>
-
-                    {/* Line Chart */}
-                    <div className="h-[300px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={lineChartData}>
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="date" />
-                          <YAxis domain={[-1, 1]} />
-                          <Tooltip />
-                          <Line
-                            type="monotone"
-                            dataKey="sentiment"
-                            stroke="#3b82f6"
-                            strokeWidth={2}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
+                  ) : (
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <PieChartContainer data={dailyData.pieData} />
+                      <LineChartContainer data={dailyData.lineData} />
                     </div>
-                  </div>
+                  )}
                 </TabsContent>
 
-                {/* Weekly Sentiment */}
                 <TabsContent value="weekly" className="space-y-4">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {/* Pie Chart */}
-                    <div className="h-[300px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={sentimentSummary}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={60}
-                            outerRadius={80}
-                            paddingAngle={5}
-                            dataKey="value"
-                          >
-                            {sentimentSummary.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={SENTIMENT_COLORS[index]} />
-                            ))}
-                          </Pie>
-                          <Tooltip />
-                        </PieChart>
-                      </ResponsiveContainer>
+                  {currentLoading ? (
+                    <div className="flex justify-center items-center h-64">
+                      <p>Loading weekly data...</p>
                     </div>
-
-                    {/* Line Chart */}
-                    <div className="h-[300px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={lineChartData}>
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="date" />
-                          <YAxis domain={[-1, 1]} />
-                          <Tooltip />
-                          <Line
-                            type="monotone"
-                            dataKey="sentiment"
-                            stroke="#3b82f6"
-                            strokeWidth={2}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
+                  ) : (
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <PieChartContainer data={weeklyData.pieData} />
+                      <LineChartContainer data={weeklyData.lineData} />
                     </div>
-                  </div>
+                  )}
                 </TabsContent>
               </Tabs>
             </CardContent>
@@ -180,3 +141,50 @@ export default function SentimentAnalysis() {
     </div>
   );
 }
+
+const PieChartContainer = ({ data }: { data: { name: string; value: number }[] }) => (
+  <div className="h-[300px]">
+    <ResponsiveContainer width="100%" height="100%">
+      <PieChart>
+        <Pie
+          data={data}
+          cx="50%"
+          cy="50%"
+          innerRadius={60}
+          outerRadius={80}
+          paddingAngle={5}
+          dataKey="value"
+          label
+        >
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={SENTIMENT_COLORS[index]} />
+          ))}
+        </Pie>
+        <Tooltip />
+        <Legend />
+      </PieChart>
+    </ResponsiveContainer>
+  </div>
+);
+
+const LineChartContainer = ({ data }: { data: { date: string; sentiment: number }[] }) => (
+  <div className="h-[300px]">
+    <ResponsiveContainer width="100%" height="100%">
+      <LineChart data={data}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="date" />
+        <YAxis domain={[-1, 1]} />
+        <Tooltip />
+        <Legend />
+        <Line
+          type="monotone"
+          dataKey="sentiment"
+          name="Sentiment Score"
+          stroke="#3b82f6"
+          strokeWidth={2}
+          activeDot={{ r: 8 }}
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  </div>
+);

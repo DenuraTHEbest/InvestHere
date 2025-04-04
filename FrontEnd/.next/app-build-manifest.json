@@ -16,15 +16,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/aspi/page.js"
     ],
-    "/chat/page": [
+    "/sentimentss/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/chat/page.js"
-    ],
-    "/admin/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/admin/page.js"
+      "static/chunks/app/sentimentss/page.js"
     ]
   }
 }
