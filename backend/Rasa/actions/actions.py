@@ -63,11 +63,11 @@ class ActionAnalyzeCompanyStock(Action):
 
     def run(self, dispatcher, tracker, domain):
         # Connect to ASPI database
-        database_name = "IndividualDB"
+        database_name = "IndividualDB2"
         mongo_uri = f"mongodb+srv://{USERNAME}:{PASSWORD}@{CLUSTER_URL}/{database_name}?retryWrites=true&w=majority"
         client = MongoClient(mongo_uri, tls=True, tlsCAFile=certifi.where())
         db = client[database_name]
-        collection = db["Compnay_Predictions"]
+        collection = db["Compnay_Predictions2"]
 
         # Get company name and transform it
         company_symbol = tracker.get_slot("company_symbol")
@@ -132,22 +132,22 @@ class ActionAnalyzeCompanyStock(Action):
 
         # Send insights to user  
         dispatcher.utter_message(
-            f"📈 **Stock Analysis for {company_symbol}**\n\n"
-            f"The stock price for {company_symbol} is expected to {trend} over the next week. "
-            f"The average predicted price is ${avg_price:.2f}. "
-            f"The expected change in price over the next week is {week_change:.2f}% ({'📈 Increase' if week_change > 0 else '📉 Decrease'}). "
-            f"The volatility level is {price_volatility:.2f} ({'High' if price_volatility > 2 else 'Low'} fluctuations). "
-            f"Here’s the technical analysis of the stock: "
-            + (f"On average, the stock price over the last 3 days is ${sma_3:.2f}. " if sma_3 else "") 
-            + f"The support level for the stock is ${support_level:.2f}. "
-            f"The resistance level for the stock is ${resistance_level:.2f}. "
-            f"The momentum for the stock is {'📈 Positive' if momentum > 0 else '📉 Negative'}. "
-            + (f"The Relative Strength Index (RSI) is {rsi:.2f}, indicating that the stock is {'Overbought' if rsi > 70 else 'Oversold' if rsi < 30 else 'Neutral'}. " if rsi else "") 
-            + f"The volatility index for the stock is {volatility_index:.2f}%. "
-            f"📢 **Trading Signal:** {decision}"
+            f"📈 Stock Analysis for {company_symbol}\n\n"
+            f"The stock price for {company_symbol} is expected to {trend} over the next week.\n"
+            f"The average predicted price is ${avg_price:.2f}.\n"
+            f"The expected change in price over the next week is {week_change:.2f}% ({'📈 Increase' if week_change > 0 else '📉 Decrease'}).\n"
+            f"The volatility level is {price_volatility:.2f} ({'High' if price_volatility > 2 else 'Low'} fluctuations).\n"
+            f"Here’s the technical analysis of the stock:\n"
+            + (f"On average, the stock price over the last 3 days is ${sma_3:.2f}.\n" if sma_3 else "") 
+            + f"The support level for the stock is ${support_level:.2f}.\n"
+            f"The resistance level for the stock is ${resistance_level:.2f}.\n"
+            f"The momentum for the stock is {'📈 Positive' if momentum > 0 else '📉 Negative'}.\n"
+            + (f"The Relative Strength Index (RSI) is {rsi:.2f}, indicating that the stock is {'Overbought' if rsi > 70 else 'Oversold' if rsi < 30 else 'Neutral'}.\n" if rsi else "") 
+            + f"The volatility index for the stock is {volatility_index:.2f}%. \n"
+            f"📢 Trading Signal: {decision}"
         )
 
-        return []   
+        return [] 
     
 class ActionAnalyzeSentiment(Action):
     def name(self):
@@ -381,14 +381,15 @@ class ActionAnalyzeASPISpecificDate(Action):
 
             # **Output Insights**
             dispatcher.utter_message(
-                f"📊 ASPI Analysis for {user_date}:\n"
-                f"The ASPI value for {user_date} is {aspi_today:.2f}.\n"
-                f"The market trend is {momentum} with {strength} momentum, indicating that the market is moving {momentum.lower()}.\n"
-                f"The ASPI has changed by {daily_change:.2f} points, which is a {daily_change_pct:.2f}% change from the previous day.\n"
-                f"The volatility level for {user_date} is {daily_volatility:.2f} points, based on the last five days of data.\n"
-                f"The support level is {support_level:.2f} and the resistance level is {resistance_level:.2f}, indicating the key price levels to watch.\n"
-                f"Based on the current ASPI value, there is a {signal}."
+                f"📊 ASPI Forecast for {user_date}:\n"
+                f"The predicted ASPI value for {user_date} is expected to be {aspi_today:.2f}.\n"
+                f"The market trend is projected to be {momentum} with {strength} momentum, indicating that the market may move {momentum.lower()}.\n"
+                f"The ASPI is forecasted to change by {daily_change:.2f} points, which represents an anticipated {daily_change_pct:.2f}% change from the previous day.\n"
+                f"The volatility level for {user_date} is estimated to be {daily_volatility:.2f} points, based on the last five days of data.\n"
+                f"The support level is projected at {support_level:.2f}, and the resistance level at {resistance_level:.2f}, highlighting the key price levels to watch.\n"
+                f"Based on the predicted ASPI value, there is a {signal}."
             )
+
         except Exception as e:
             print(f"❌ Error analyzing ASPI data: {e}")
             dispatcher.utter_message("⚠️ An error occurred while analyzing the ASPI data.")

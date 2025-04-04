@@ -227,33 +227,33 @@ nlu:
 
 - intent: analyze_company_stock
   examples: |
-    - Can you analyze the stock trends for [AAPL](company)?
-    - What are the predictions for [TSLA](company)?
-    - Analyze the stock performance of [GOOGL](company).
-    - How is [MSFT](company) expected to perform?
-    - What do the stock predictions say for [AMZN](company)?
-    - Analyze the stock trends for [SPY](company).
-    - How will [NVIDIA](company) stock move?
-    - What’s the forecast for [TSLA](company)?
-    - What can we expect for [Apple](company) stock performance?
-    - How is the stock of [BABA](company) likely to behave?
-    - What are the predictions for [Intel](company)?
+    - Can you analyze the stock trends for [Abans](company)?
+    - What are the predictions for [ABANS](company)?
+    - Analyze the stock performance of [ALLIANCE_data](company).
+    - How is [Ceylinco](company) expected to perform?
+    - What do the stock predictions say for [DFCC BANK PLC_data](company)?
+    - Analyze the stock trends for [HAYLEYS_data](company).
+    - How will [Hayleys](company) stock move?
+    - What’s the forecast for [abans](company)?
+    - What can we expect for [HORANA](company) stock performance?
+    - How is the stock of [LOLC FINANCE](company) likely to behave?
+    - What are the predictions for [RENUKA CITY HOT._data](company)?
     - Analyze the stock trends of [Meta](company).
-    - What’s the stock performance outlook for [GOOGL](company)?
+    - What’s the stock performance outlook for [Sathosa](company)?
     - How is [NVIDIA](company)’s stock expected to perform?
-    - Can you give me stock predictions for [AAPL](company)?
-    - How’s the stock performance of [TSLA](company)?
-    - What’s the trend for [AMZN](company) stock?
-    - How is [BABA](company) stock expected to behave?
-    - What’s the forecast for [GOOG](company) stock?
-    - Can you give me predictions on [TWTR](company) stock?
-    - Analyze the stock performance for [NVIDIA](company).
-    - What are the latest trends for [AAPL](company) stock?
-    - How are the stock trends for [Meta](company)?
-    - Can you predict the future stock of [TSLA](company)?
-    - How’s the stock outlook for [GOOGL](company)?
+    - Can you give me stock predictions for [commercial bank](company)?
+    - How’s the stock performance of [Singer](company)?
+    - What’s the trend for [TOKYO CEMENT](company) stock?
+    - How is [ASIA SIYAKA](company) stock expected to behave?
+    - What’s the forecast for [Dialog](company) stock?
+    - Can you give me predictions on [AXIATA](company) stock?
+    - Analyze the stock performance for [union](company).
+    - What are the latest trends for [John Keells Holdings](company) stock?
+    - How are the stock trends for [Bogawantalawa](company)?
+    - Can you predict the future stock of [BROWNS INVSTMNTS](company)?
+    - How’s the stock outlook for [PANASIAN POWER_data](company)?
     - Analyze the stock behavior for [Amazon](company).
-    - What do stock predictions indicate for [MSFT](company)?
+    - What do stock predictions indicate for [Deloitte](company)?
 
 - intent: analyze_aspi_specific_date
   examples: |
