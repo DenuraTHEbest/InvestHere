@@ -211,25 +211,25 @@ class ActionAnalyzeSentiment(Action):
                 streak = 0
 
         # General Market Sentiment
-        dispatcher.utter_message("📊 Sentiment scores range from -1 (very negative) to 1 (very positive), with 0 being neutral.")  
-        dispatcher.utter_message(f"Over the past week, the market sentiment has been {trend}, with an average sentiment score of {avg_sentiment:.2f}. "  
-                         f"Sentiment distribution over the past week: {negative_ratio*100:.1f}% negative, {neutral_ratio*100:.1f}% neutral, and {positive_ratio*100:.1f}% positive. "  
-                         f"Market sentiment volatility is {sentiment_volatility:.2f}, indicating {('high' if sentiment_volatility > 0.2 else 'low')} fluctuations.")  
-        if trend == "positive":  
-            dispatcher.utter_message("Investor confidence is high, which could lead to upward stock price movements.")  
-        elif trend == "negative":  
-            dispatcher.utter_message("Market uncertainty is rising, which may cause stock prices to decline.")  
-        else:  
-            dispatcher.utter_message("The market remains neutral with no strong directional movement.")  
-        if momentum > 0:  
-            dispatcher.utter_message("Sentiment is trending upwards, suggesting increasing market optimism.")  
-        elif momentum < 0:  
-            dispatcher.utter_message("Sentiment is on a downward trend, indicating growing market concerns.")  
-        else:  
-            dispatcher.utter_message("Market sentiment has remained stable over the past week.")  
-        dispatcher.utter_message(f"The highest sentiment score recorded this week was {highest_sentiment:.2f}, reflecting strong positive momentum, while the lowest sentiment score was {lowest_sentiment:.2f}, marking a significant negative shift on that day.")  
-        if max_streak > 2:  
-            dispatcher.utter_message(f"The market has shown a {streak_type} sentiment streak for {max_streak+1} consecutive days, signaling a strong short-term trend.")  
+        dispatcher.utter_message(
+            f"📊 Sentiment scores range from -1 (very negative) to 1 (very positive), with 0 being neutral.\n\n"
+            f"Over the past week, the market sentiment has been {trend}, with an average sentiment score of {avg_sentiment:.2f}.\n"
+            f"Sentiment distribution over the past week:\n"
+            f"🔴 {negative_ratio*100:.1f}% negative\n"
+            f"⚪ {neutral_ratio*100:.1f}% neutral\n"
+            f"🟢 {positive_ratio*100:.1f}% positive.\n"
+            f"Market sentiment volatility is {sentiment_volatility:.2f}, indicating "
+            f"{'high' if sentiment_volatility > 0.2 else 'low'} fluctuations.\n\n"
+            f"{'✅ Investor confidence is high, which could lead to upward stock price movements.' if trend == 'positive' else ''}"
+            f"{'⚠️ Market uncertainty is rising, which may cause stock prices to decline.' if trend == 'negative' else ''}"
+            f"{'🔍 The market remains neutral with no strong directional movement.' if trend == 'neutral' else ''}\n\n"
+            f"{'📈 Sentiment is trending upwards, suggesting increasing market optimism.' if momentum > 0 else ''}"
+            f"{'📉 Sentiment is on a downward trend, indicating growing market concerns.' if momentum < 0 else ''}"
+            f"{'🔄 Market sentiment has remained stable over the past week.' if momentum == 0 else ''}\n\n"
+            f"📊 The highest sentiment score recorded this week was {highest_sentiment:.2f}, reflecting strong positive momentum.\n"
+            f"📉 The lowest sentiment score was {lowest_sentiment:.2f}, marking a significant negative shift on that day.\n\n"
+            f"{f'🔥 The market has shown a {streak_type} sentiment streak for {max_streak+1} consecutive days, signaling a strong short-term trend.' if max_streak > 2 else ''}"
+        )
 
         return []
 
@@ -292,7 +292,14 @@ class ActionAnalyzeASPI(Action):
                     else:
                         reversal_signal = "no trend reversal expected ✅."
 
-                    dispatcher.utter_message(f"📊 The ASPI is expected to **{trend}** over the predicted period, with an average predicted value of **{avg_aspi:.2f}**. 📈 The highest projected ASPI value is **{high_aspi:.2f}**, while the lowest is **{low_aspi:.2f}**. 📉 Market volatility is estimated at **{volatility:.2f} points**, indicating potential fluctuations. 📊 The ASPI is forecasted to change by **{overall_change:.2f}%** compared to the starting value, exhibiting **{momentum_trend}** throughout this period. 📊 Trend analysis suggests a **{trend_type}** market movement. ⚠️ Market insight: {reversal_signal}") 
+                    dispatcher.utter_message(
+                        f"📊 The ASPI is expected to {trend} over the predicted period, with an average predicted value of {avg_aspi:.2f}.\n"
+                        f"📈 The highest projected ASPI value is {high_aspi:.2f}, while the lowest is {low_aspi:.2f}.\n"
+                        f"📉 Market volatility is estimated at {volatility:.2f} points, indicating potential fluctuations.\n"
+                        f"📊 The ASPI is forecasted to change by {overall_change:.2f}% compared to the starting value, exhibiting {momentum_trend} throughout this period.\n"
+                        f"📊 Trend analysis suggests a {trend_type} market movement.\n"
+                        f"⚠️ Market insight: {reversal_signal}."
+                    )
 
                 else:
                     dispatcher.utter_message("⚠️ Not enough ASPI predictions available to analyze trends.")
@@ -373,8 +380,15 @@ class ActionAnalyzeASPISpecificDate(Action):
                 signal = "✅ Market remains within expected range."
 
             # **Output Insights**
-            dispatcher.utter_message(f"📊 ASPI Analysis for {user_date}: The ASPI value for {user_date} is **{aspi_today:.2f}**. The market trend is **{momentum}** with **{strength}** momentum, indicating that the market is moving {momentum.lower()}. The ASPI has changed by **{daily_change:.2f} points**, which is a **{daily_change_pct:.2f}%** change from the previous day. The volatility level for {user_date} is **{daily_volatility:.2f} points**, based on the last five days of data. The support level is **{support_level:.2f}** and the resistance level is **{resistance_level:.2f}**, indicating the key price levels to watch. Based on the current ASPI value, there is a **{signal}**.")
-
+            dispatcher.utter_message(
+                f"📊 ASPI Analysis for {user_date}:\n"
+                f"The ASPI value for {user_date} is {aspi_today:.2f}.\n"
+                f"The market trend is {momentum} with {strength} momentum, indicating that the market is moving {momentum.lower()}.\n"
+                f"The ASPI has changed by {daily_change:.2f} points, which is a {daily_change_pct:.2f}% change from the previous day.\n"
+                f"The volatility level for {user_date} is {daily_volatility:.2f} points, based on the last five days of data.\n"
+                f"The support level is {support_level:.2f} and the resistance level is {resistance_level:.2f}, indicating the key price levels to watch.\n"
+                f"Based on the current ASPI value, there is a {signal}."
+            )
         except Exception as e:
             print(f"❌ Error analyzing ASPI data: {e}")
             dispatcher.utter_message("⚠️ An error occurred while analyzing the ASPI data.")
