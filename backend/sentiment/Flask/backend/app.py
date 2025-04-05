@@ -149,25 +149,44 @@ def get_daily_sentiment():
 @app.route('/get-weekly-sentiment', methods=['GET'])
 def get_weekly_sentiment():
     try:
-        # Get all weekly data sorted by week in descending order
-        weekly_data = weekly_scores_collection.find().sort('week', -1)
+        # Find the latest available week in the database
+        latest_doc = weekly_scores_collection.find_one(
+            {}, 
+            sort=[('week', DESCENDING)]
+        )
+
+        if not latest_doc:
+            return jsonify([])
+
+        # Get the latest week's start date (first part of the week range)
+        latest_week_start_str = latest_doc['week'].split('/')[0]
+        latest_week_start = datetime.strptime(latest_week_start_str, '%Y-%m-%d')
         
+        # Calculate the start of our 20-week period
+        start_of_period = latest_week_start - timedelta(weeks=20)
+        
+        # Fetch only the last 20 weeks of data
+        weekly_data = weekly_scores_collection.find({
+            'week': {
+                '$gte': f"{start_of_period.strftime('%Y-%m-%d')}/{latest_week_start.strftime('%Y-%m-%d')}"
+            }
+        }).sort('week', -1).limit(20)
+
         result = []
         for doc in weekly_data:
-            # Parse the week string to get start date (first part before '/')
             week_start_str = doc['week'].split('/')[0]
             week_start_date = datetime.strptime(week_start_str, '%Y-%m-%d')
             
             result.append({
                 'date': doc['week'],  # Keep the original week range string
-                'week_start': week_start_date.isoformat(),  # Add parsed start date
+                'week_start': week_start_date.isoformat(),
                 'positive': doc['positive'],
                 'neutral': doc['neutral'],
                 'negative': doc['negative'],
                 'weighted_score': doc['weighted_score']
             })
-        
-        # Sort by week_start date in descending order
+
+        # Sort by week_start date in descending order (most recent first)
         result.sort(key=lambda x: x['week_start'], reverse=True)
         
         return jsonify(result)
