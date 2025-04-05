@@ -17,13 +17,13 @@ CORS(app)  # Allow CORS if frontend is on a different port
 MONGO_URI = "mongodb+srv://kavishanvishwajith:BjNG7kGpWeLUJXNc@cluster01.e5p2x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster01"
 client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
 db = client["IndividualDB2"]
-collection = db["Compnay_Predictions2"]
+collection = db["Compnay_Predictions3"]
 print("✅ Connected to MongoDB Atlas successfully!")
 
 # ----------------------------------------------------------------
 # 2) Load Your Trained Model
 # ----------------------------------------------------------------
-MODEL_PATH = '20daysModel.pkl'
+MODEL_PATH = '/backend/company/20daysModel.pkl'
 if os.path.exists(MODEL_PATH):
     model = joblib.load(MODEL_PATH)
     print("✅ Model loaded successfully!")

@@ -37,7 +37,7 @@ const companyPredictionSchema = new mongoose.Schema(
 const CompanyPrediction = mongoose.model(
   "CompanyPrediction",
   companyPredictionSchema,
-  "Compnay_Predictions2"
+  "Compnay_Predictions3"
 );
 
 // 4) DEFINE ROUTES
