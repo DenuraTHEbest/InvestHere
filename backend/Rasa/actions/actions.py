@@ -134,13 +134,13 @@ class ActionAnalyzeCompanyStock(Action):
         dispatcher.utter_message(
             f"📈 Stock Analysis for {company_symbol}\n\n"
             f"The stock price for {company_symbol} is expected to {trend} over the next week.\n"
-            f"The average predicted price is ${avg_price:.2f}.\n"
+            f"The average predicted price is Rs. {avg_price:.2f}.\n"
             f"The expected change in price over the next week is {week_change:.2f}% ({'📈 Increase' if week_change > 0 else '📉 Decrease'}).\n"
             f"The volatility level is {price_volatility:.2f} ({'High' if price_volatility > 2 else 'Low'} fluctuations).\n"
             f"Here’s the technical analysis of the stock:\n"
-            + (f"On average, the stock price over the last 3 days is ${sma_3:.2f}.\n" if sma_3 else "") 
-            + f"The support level for the stock is ${support_level:.2f}.\n"
-            f"The resistance level for the stock is ${resistance_level:.2f}.\n"
+            + (f"On average, the stock price over the last 3 days is Rs. {sma_3:.2f}.\n" if sma_3 else "") 
+            + f"The support level for the stock is Rs. {support_level:.2f}.\n"
+            f"The resistance level for the stock is Rs. {resistance_level:.2f}.\n"
             f"The momentum for the stock is {'📈 Positive' if momentum > 0 else '📉 Negative'}.\n"
             + (f"The Relative Strength Index (RSI) is {rsi:.2f}, indicating that the stock is {'Overbought' if rsi > 70 else 'Oversold' if rsi < 30 else 'Neutral'}.\n" if rsi else "") 
             + f"The volatility index for the stock is {volatility_index:.2f}%. \n"
