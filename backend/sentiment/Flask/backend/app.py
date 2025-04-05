@@ -116,7 +116,7 @@ def get_sentiment_data():
 @app.route('/get-daily-sentiment', methods=['GET'])
 def get_daily_sentiment():
     # Find the latest available date in the database
-    latest_doc = test_collection.find_one(
+    latest_doc = daily_scores_collection.find_one(
         {}, 
         sort=[('date', DESCENDING)]
     )
@@ -127,7 +127,7 @@ def get_daily_sentiment():
         start_of_period = start_of_period.replace(hour=0, minute=0, second=0, microsecond=0)
         end_of_day = latest_date.replace(hour=23, minute=59, second=59, microsecond=999999)
 
-        data = test_collection.find({
+        data = daily_scores_collection.find({
             'date': {'$gte': start_of_period, '$lte': end_of_day}
         })
 
