@@ -1,8 +1,6 @@
 {
-  "/not-found": "app/not-found.js",
   "/page": "app/page.js",
-  "/aspi/page": "app/aspi/page.js",
-  "/chat/page": "app/chat/page.js",
-  "/sentimentadmin/page": "app/sentimentadmin/page.js",
-  "/admin/page": "app/admin/page.js"
+  "/admin/page": "app/admin/page.js",
+  "/aspiadmin/page": "app/aspiadmin/page.js",
+  "/aspi/page": "app/aspi/page.js"
 }

@@ -1,0 +1,548 @@
+2025-04-06 15:05:21,154 - DEBUG - Environment variables loaded
+2025-04-06 15:05:21,155 - DEBUG - Flask app initialized with CORS
+2025-04-06 15:05:21,155 - DEBUG - Connecting to MongoDB: test.daily_scores
+2025-04-06 15:05:21,334 - DEBUG - MongoDB connection established successfully
+2025-04-06 15:05:21,335 - DEBUG - Starting Flask application
+2025-04-06 15:05:21,372 - WARNING -  * Debugger is active!
+2025-04-06 15:05:21,383 - INFO -  * Debugger PIN: 685-674-764
+2025-04-06 15:05:33,109 - INFO - 127.0.0.1 - - [06/Apr/2025 15:05:33] "OPTIONS /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 15:05:33,125 - DEBUG - 
+==================================================
+2025-04-06 15:05:33,125 - DEBUG - New request received at 2025-04-06 15:05:33.125475
+2025-04-06 15:05:33,125 - DEBUG - Headers: {'Host': '127.0.0.1:5050', 'Connection': 'keep-alive', 'Content-Length': '24', 'Sec-Ch-Ua-Platform': '"macOS"', 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'Sec-Ch-Ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:3000', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:3000/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8'}
+2025-04-06 15:05:33,125 - DEBUG - Request data: {'decimalValue': '12000'}
+2025-04-06 15:05:33,125 - DEBUG - Processing decimal value: 12000
+2025-04-06 15:05:33,126 - DEBUG - Attempting to fetch latest document from MongoDB
+2025-04-06 15:05:33,953 - DEBUG - Retrieved weighted_score: -0.2
+2025-04-06 15:05:33,954 - DEBUG - Starting featureEngineeringPipeline.py
+2025-04-06 15:05:33,954 - DEBUG - Command: python featureEngineeringPipeline.py 12000 -0.2
+2025-04-06 15:05:34,757 - DEBUG - Feature pipeline completed with return code: 1
+2025-04-06 15:05:34,757 - DEBUG - Feature pipeline stdout: 
+2025-04-06 15:05:34,757 - ERROR - Feature pipeline stderr: Traceback (most recent call last):
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/aspi/featureEngineeringPipeline.py", line 3, in <module>
+    from ta.trend import EMAIndicator
+ModuleNotFoundError: No module named 'ta'
+
+2025-04-06 15:05:34,758 - DEBUG - Starting adminpipeline2.py
+2025-04-06 15:05:34,758 - DEBUG - Command: python adminpipeline2.py 12000
+2025-04-06 15:05:36,204 - DEBUG - Admin pipeline completed with return code: 1
+2025-04-06 15:05:36,204 - DEBUG - Admin pipeline stdout: 
+2025-04-06 15:05:36,204 - ERROR - Admin pipeline stderr: /Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/sklearn/base.py:329: UserWarning: Trying to unpickle estimator DecisionTreeRegressor from version 1.6.1 when using version 1.1.3. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/sklearn/base.py:329: UserWarning: Trying to unpickle estimator RandomForestRegressor from version 1.6.1 when using version 1.1.3. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+Traceback (most recent call last):
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/aspi/adminpipeline2.py", line 6, in <module>
+    model = joblib.load('aspi_forecast_model_new.pkl')
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/joblib/numpy_pickle.py", line 658, in load
+    obj = _unpickle(fobj, filename, mmap_mode)
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/joblib/numpy_pickle.py", line 577, in _unpickle
+    obj = unpickler.load()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pickle.py", line 1212, in load
+    dispatch[key[0]](self)
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/joblib/numpy_pickle.py", line 415, in load_build
+    self.stack.append(array_wrapper.read(self))
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/joblib/numpy_pickle.py", line 252, in read
+    array = self.read_array(unpickler)
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/joblib/numpy_pickle.py", line 152, in read_array
+    array = pickle.load(unpickler.file_handle)
+ModuleNotFoundError: No module named 'numpy._core'
+
+2025-04-06 15:05:36,205 - ERROR - Pipeline processing failed
+2025-04-06 15:05:36,206 - INFO - 127.0.0.1 - - [06/Apr/2025 15:05:36] "[35m[1mPOST /api/process_aspi HTTP/1.1[0m" 500 -
+2025-04-06 15:30:21,723 - DEBUG - Environment variables loaded
+2025-04-06 15:30:21,724 - DEBUG - Flask app initialized with CORS
+2025-04-06 15:30:21,724 - DEBUG - Connecting to MongoDB: test.daily_scores
+2025-04-06 15:30:21,808 - DEBUG - MongoDB connection established successfully
+2025-04-06 15:30:21,808 - DEBUG - Starting Flask application
+2025-04-06 15:30:21,840 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5050
+2025-04-06 15:30:21,840 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-06 15:30:21,841 - INFO -  * Restarting with stat
+2025-04-06 15:30:22,109 - DEBUG - Environment variables loaded
+2025-04-06 15:30:22,110 - DEBUG - Flask app initialized with CORS
+2025-04-06 15:30:22,110 - DEBUG - Connecting to MongoDB: test.daily_scores
+2025-04-06 15:30:22,191 - DEBUG - MongoDB connection established successfully
+2025-04-06 15:30:22,192 - DEBUG - Starting Flask application
+2025-04-06 15:30:22,222 - WARNING -  * Debugger is active!
+2025-04-06 15:30:22,245 - INFO -  * Debugger PIN: 685-674-764
+2025-04-06 15:30:29,114 - INFO - 127.0.0.1 - - [06/Apr/2025 15:30:29] "OPTIONS /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 15:30:29,116 - DEBUG - 
+==================================================
+2025-04-06 15:30:29,116 - DEBUG - New request received at 2025-04-06 15:30:29.116834
+2025-04-06 15:30:29,116 - DEBUG - Headers: {'Host': '127.0.0.1:5050', 'Connection': 'keep-alive', 'Content-Length': '24', 'Sec-Ch-Ua-Platform': '"macOS"', 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'Sec-Ch-Ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:3000', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:3000/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8'}
+2025-04-06 15:30:29,132 - DEBUG - Request data: {'decimalValue': '12000'}
+2025-04-06 15:30:29,132 - DEBUG - Processing decimal value: 12000
+2025-04-06 15:30:29,132 - DEBUG - Attempting to fetch latest document from MongoDB
+2025-04-06 15:30:30,026 - DEBUG - Retrieved weighted_score: -0.2
+2025-04-06 15:30:30,026 - DEBUG - Starting featureEngineeringPipeline.py
+2025-04-06 15:30:30,026 - DEBUG - Command: python featureEngineeringPipeline.py 12000 -0.2
+2025-04-06 15:30:30,587 - DEBUG - Feature pipeline completed with return code: 0
+2025-04-06 15:30:30,587 - DEBUG - Feature pipeline stdout: Successfully loaded 151 rows of historical data
+Next day's data added and saved to aspi_test_features.csv
+
+2025-04-06 15:30:30,587 - DEBUG - Starting adminpipeline2.py
+2025-04-06 15:30:30,587 - DEBUG - Command: python adminpipeline2.py 12000
+2025-04-06 15:30:32,471 - DEBUG - Admin pipeline completed with return code: 1
+2025-04-06 15:30:32,472 - DEBUG - Admin pipeline stdout: 
+2025-04-06 15:30:32,472 - ERROR - Admin pipeline stderr: /Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/sklearn/base.py:329: UserWarning: Trying to unpickle estimator DecisionTreeRegressor from version 1.6.1 when using version 1.1.3. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/sklearn/base.py:329: UserWarning: Trying to unpickle estimator RandomForestRegressor from version 1.6.1 when using version 1.1.3. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+Traceback (most recent call last):
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/aspi/adminpipeline2.py", line 6, in <module>
+    model = joblib.load('aspi_forecast_model_new.pkl')
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/joblib/numpy_pickle.py", line 658, in load
+    obj = _unpickle(fobj, filename, mmap_mode)
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/joblib/numpy_pickle.py", line 577, in _unpickle
+    obj = unpickler.load()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pickle.py", line 1212, in load
+    dispatch[key[0]](self)
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/joblib/numpy_pickle.py", line 415, in load_build
+    self.stack.append(array_wrapper.read(self))
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/joblib/numpy_pickle.py", line 252, in read
+    array = self.read_array(unpickler)
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/joblib/numpy_pickle.py", line 152, in read_array
+    array = pickle.load(unpickler.file_handle)
+ModuleNotFoundError: No module named 'numpy._core'
+
+2025-04-06 15:30:32,472 - ERROR - Pipeline processing failed
+2025-04-06 15:30:32,472 - INFO - 127.0.0.1 - - [06/Apr/2025 15:30:32] "[35m[1mPOST /api/process_aspi HTTP/1.1[0m" 500 -
+2025-04-06 15:33:47,318 - DEBUG - Environment variables loaded
+2025-04-06 15:33:47,319 - DEBUG - Flask app initialized with CORS
+2025-04-06 15:33:47,319 - DEBUG - Connecting to MongoDB: test.daily_scores
+2025-04-06 15:33:47,452 - DEBUG - MongoDB connection established successfully
+2025-04-06 15:33:47,452 - DEBUG - Starting Flask application
+2025-04-06 15:33:47,495 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5050
+2025-04-06 15:33:47,495 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-06 15:33:47,496 - INFO -  * Restarting with stat
+2025-04-06 15:33:47,758 - DEBUG - Environment variables loaded
+2025-04-06 15:33:47,759 - DEBUG - Flask app initialized with CORS
+2025-04-06 15:33:47,759 - DEBUG - Connecting to MongoDB: test.daily_scores
+2025-04-06 15:33:47,916 - DEBUG - MongoDB connection established successfully
+2025-04-06 15:33:47,916 - DEBUG - Starting Flask application
+2025-04-06 15:33:47,933 - WARNING -  * Debugger is active!
+2025-04-06 15:33:47,942 - INFO -  * Debugger PIN: 685-674-764
+2025-04-06 15:33:54,133 - INFO - 127.0.0.1 - - [06/Apr/2025 15:33:54] "OPTIONS /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 15:33:54,135 - DEBUG - 
+==================================================
+2025-04-06 15:33:54,135 - DEBUG - New request received at 2025-04-06 15:33:54.135708
+2025-04-06 15:33:54,135 - DEBUG - Headers: {'Host': '127.0.0.1:5050', 'Connection': 'keep-alive', 'Content-Length': '24', 'Sec-Ch-Ua-Platform': '"macOS"', 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'Sec-Ch-Ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:3000', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:3000/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8'}
+2025-04-06 15:33:54,136 - DEBUG - Request data: {'decimalValue': '12000'}
+2025-04-06 15:33:54,136 - DEBUG - Processing decimal value: 12000
+2025-04-06 15:33:54,136 - DEBUG - Attempting to fetch latest document from MongoDB
+2025-04-06 15:33:54,963 - DEBUG - Retrieved weighted_score: -0.2
+2025-04-06 15:33:54,963 - DEBUG - Starting featureEngineeringPipeline.py
+2025-04-06 15:33:54,964 - DEBUG - Command: python featureEngineeringPipeline.py 12000 -0.2
+2025-04-06 15:33:55,531 - DEBUG - Feature pipeline completed with return code: 0
+2025-04-06 15:33:55,531 - DEBUG - Feature pipeline stdout: Successfully loaded 152 rows of historical data
+Next day's data added and saved to aspi_test_features.csv
+
+2025-04-06 15:33:55,531 - DEBUG - Starting adminpipeline2.py
+2025-04-06 15:33:55,531 - DEBUG - Command: python adminpipeline2.py 12000
+2025-04-06 15:33:56,232 - DEBUG - Admin pipeline completed with return code: 1
+2025-04-06 15:33:56,232 - DEBUG - Admin pipeline stdout: 
+2025-04-06 15:33:56,232 - ERROR - Admin pipeline stderr: /Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/scipy/__init__.py:143: UserWarning: A NumPy version >=1.19.5 and <1.27.0 is required for this version of SciPy (detected version 2.0.2)
+  warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.0.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/aspi/adminpipeline2.py", line 6, in <module>
+    model = joblib.load('aspi_forecast_model_new.pkl')
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/joblib/numpy_pickle.py", line 658, in load
+    obj = _unpickle(fobj, filename, mmap_mode)
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/joblib/numpy_pickle.py", line 577, in _unpickle
+    obj = unpickler.load()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pickle.py", line 1212, in load
+    dispatch[key[0]](self)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pickle.py", line 1537, in load_stack_global
+    self.append(self.find_class(module, name))
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pickle.py", line 1579, in find_class
+    __import__(module, level=0)
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/sklearn/__init__.py", line 82, in <module>
+    from .base import clone
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/sklearn/base.py", line 17, in <module>
+    from .utils import _IS_32BIT
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/sklearn/utils/__init__.py", line 22, in <module>
+    from scipy.sparse import issparse
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/scipy/sparse/__init__.py", line 267, in <module>
+    from ._csr import *
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/scipy/sparse/_csr.py", line 10, in <module>
+    from ._sparsetools import (csr_tocsc, csr_tobsr, csr_count_blocks,
+AttributeError: _ARRAY_API not found
+Traceback (most recent call last):
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/aspi/adminpipeline2.py", line 6, in <module>
+    model = joblib.load('aspi_forecast_model_new.pkl')
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/joblib/numpy_pickle.py", line 658, in load
+    obj = _unpickle(fobj, filename, mmap_mode)
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/joblib/numpy_pickle.py", line 577, in _unpickle
+    obj = unpickler.load()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pickle.py", line 1212, in load
+    dispatch[key[0]](self)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pickle.py", line 1537, in load_stack_global
+    self.append(self.find_class(module, name))
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pickle.py", line 1579, in find_class
+    __import__(module, level=0)
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/sklearn/__init__.py", line 82, in <module>
+    from .base import clone
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/sklearn/base.py", line 17, in <module>
+    from .utils import _IS_32BIT
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/sklearn/utils/__init__.py", line 22, in <module>
+    from scipy.sparse import issparse
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/scipy/sparse/__init__.py", line 267, in <module>
+    from ._csr import *
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/scipy/sparse/_csr.py", line 10, in <module>
+    from ._sparsetools import (csr_tocsc, csr_tobsr, csr_count_blocks,
+ImportError: numpy.core.multiarray failed to import
+
+2025-04-06 15:33:56,233 - ERROR - Pipeline processing failed
+2025-04-06 15:33:56,233 - INFO - 127.0.0.1 - - [06/Apr/2025 15:33:56] "[35m[1mPOST /api/process_aspi HTTP/1.1[0m" 500 -
+2025-04-06 15:46:03,764 - DEBUG - Environment variables loaded
+2025-04-06 15:46:03,765 - DEBUG - Flask app initialized with CORS
+2025-04-06 15:46:03,765 - DEBUG - Connecting to MongoDB: test.daily_scores
+2025-04-06 15:46:03,789 - DEBUG - MongoDB connection established successfully
+2025-04-06 15:46:03,789 - DEBUG - Starting Flask application
+2025-04-06 15:46:03,819 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5050
+2025-04-06 15:46:03,819 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-06 15:46:03,820 - INFO -  * Restarting with stat
+2025-04-06 15:46:04,069 - DEBUG - Environment variables loaded
+2025-04-06 15:46:04,070 - DEBUG - Flask app initialized with CORS
+2025-04-06 15:46:04,070 - DEBUG - Connecting to MongoDB: test.daily_scores
+2025-04-06 15:46:04,091 - DEBUG - MongoDB connection established successfully
+2025-04-06 15:46:04,092 - DEBUG - Starting Flask application
+2025-04-06 15:46:04,109 - WARNING -  * Debugger is active!
+2025-04-06 15:46:04,116 - INFO -  * Debugger PIN: 685-674-764
+2025-04-06 15:46:13,014 - INFO - 127.0.0.1 - - [06/Apr/2025 15:46:13] "OPTIONS /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 15:46:13,016 - DEBUG - 
+==================================================
+2025-04-06 15:46:13,017 - DEBUG - New request received at 2025-04-06 15:46:13.016999
+2025-04-06 15:46:13,017 - DEBUG - Headers: {'Host': '127.0.0.1:5050', 'Connection': 'keep-alive', 'Content-Length': '24', 'Sec-Ch-Ua-Platform': '"macOS"', 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'Sec-Ch-Ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:3000', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:3000/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8'}
+2025-04-06 15:46:13,038 - DEBUG - Request data: {'decimalValue': '12000'}
+2025-04-06 15:46:13,038 - DEBUG - Processing decimal value: 12000
+2025-04-06 15:46:13,038 - DEBUG - Attempting to fetch latest document from MongoDB
+2025-04-06 15:46:13,986 - DEBUG - Retrieved weighted_score: -0.2
+2025-04-06 15:46:13,987 - DEBUG - Starting featureEngineeringPipeline.py
+2025-04-06 15:46:13,987 - DEBUG - Command: python featureEngineeringPipeline.py 12000 -0.2
+2025-04-06 15:46:14,566 - DEBUG - Feature pipeline completed with return code: 0
+2025-04-06 15:46:14,566 - DEBUG - Feature pipeline stdout: Successfully loaded 153 rows of historical data
+Next day's data added and saved to aspi_test_features.csv
+
+2025-04-06 15:46:14,566 - DEBUG - Starting adminpipeline2.py
+2025-04-06 15:46:14,567 - DEBUG - Command: python adminpipeline2.py 12000
+2025-04-06 15:46:15,925 - DEBUG - Admin pipeline completed with return code: 1
+2025-04-06 15:46:15,925 - DEBUG - Admin pipeline stdout: 
+2025-04-06 15:46:15,925 - ERROR - Admin pipeline stderr: /Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/sklearn/base.py:329: UserWarning: Trying to unpickle estimator DecisionTreeRegressor from version 1.6.1 when using version 1.1.3. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/sklearn/base.py:329: UserWarning: Trying to unpickle estimator RandomForestRegressor from version 1.6.1 when using version 1.1.3. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+Traceback (most recent call last):
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/aspi/adminpipeline2.py", line 6, in <module>
+    model = joblib.load('aspi_forecast_model_new.pkl')
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/joblib/numpy_pickle.py", line 658, in load
+    obj = _unpickle(fobj, filename, mmap_mode)
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/joblib/numpy_pickle.py", line 577, in _unpickle
+    obj = unpickler.load()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pickle.py", line 1212, in load
+    dispatch[key[0]](self)
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/joblib/numpy_pickle.py", line 402, in load_build
+    Unpickler.load_build(self)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pickle.py", line 1717, in load_build
+    setstate(state)
+  File "sklearn/tree/_tree.pyx", line 692, in sklearn.tree._tree.Tree.__setstate__
+  File "sklearn/tree/_tree.pyx", line 1379, in sklearn.tree._tree._check_node_ndarray
+ValueError: node array from the pickle has an incompatible dtype:
+- expected: [('left_child', '<i8'), ('right_child', '<i8'), ('feature', '<i8'), ('threshold', '<f8'), ('impurity', '<f8'), ('n_node_samples', '<i8'), ('weighted_n_node_samples', '<f8')]
+- got     : {'names': ['left_child', 'right_child', 'feature', 'threshold', 'impurity', 'n_node_samples', 'weighted_n_node_samples', 'missing_go_to_left'], 'formats': ['<i8', '<i8', '<i8', '<f8', '<f8', '<i8', '<f8', 'u1'], 'offsets': [0, 8, 16, 24, 32, 40, 48, 56], 'itemsize': 64}
+
+2025-04-06 15:46:15,925 - ERROR - Pipeline processing failed
+2025-04-06 15:46:15,926 - INFO - 127.0.0.1 - - [06/Apr/2025 15:46:15] "[35m[1mPOST /api/process_aspi HTTP/1.1[0m" 500 -
+2025-04-06 15:47:37,315 - DEBUG - Environment variables loaded
+2025-04-06 15:47:37,316 - DEBUG - Flask app initialized with CORS
+2025-04-06 15:47:37,316 - DEBUG - Connecting to MongoDB: test.daily_scores
+2025-04-06 15:47:44,183 - DEBUG - MongoDB connection established successfully
+2025-04-06 15:47:44,184 - DEBUG - Starting Flask application
+2025-04-06 15:47:44,220 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5050
+2025-04-06 15:47:44,220 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-06 15:47:44,221 - INFO -  * Restarting with stat
+2025-04-06 15:47:44,558 - DEBUG - Environment variables loaded
+2025-04-06 15:47:44,559 - DEBUG - Flask app initialized with CORS
+2025-04-06 15:47:44,559 - DEBUG - Connecting to MongoDB: test.daily_scores
+2025-04-06 15:47:44,579 - DEBUG - MongoDB connection established successfully
+2025-04-06 15:47:44,579 - DEBUG - Starting Flask application
+2025-04-06 15:47:44,596 - WARNING -  * Debugger is active!
+2025-04-06 15:47:44,605 - INFO -  * Debugger PIN: 685-674-764
+2025-04-06 15:47:48,077 - INFO - 127.0.0.1 - - [06/Apr/2025 15:47:48] "OPTIONS /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 15:47:48,079 - DEBUG - 
+==================================================
+2025-04-06 15:47:48,079 - DEBUG - New request received at 2025-04-06 15:47:48.079685
+2025-04-06 15:47:48,080 - DEBUG - Headers: {'Host': '127.0.0.1:5050', 'Connection': 'keep-alive', 'Content-Length': '24', 'Sec-Ch-Ua-Platform': '"macOS"', 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'Sec-Ch-Ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:3000', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:3000/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8'}
+2025-04-06 15:47:48,105 - DEBUG - Request data: {'decimalValue': '12000'}
+2025-04-06 15:47:48,105 - DEBUG - Processing decimal value: 12000
+2025-04-06 15:47:48,105 - DEBUG - Attempting to fetch latest document from MongoDB
+2025-04-06 15:47:49,061 - DEBUG - Retrieved weighted_score: -0.2
+2025-04-06 15:47:49,061 - DEBUG - Starting featureEngineeringPipeline.py
+2025-04-06 15:47:49,061 - DEBUG - Command: python featureEngineeringPipeline.py 12000 -0.2
+2025-04-06 15:47:49,603 - DEBUG - Feature pipeline completed with return code: 0
+2025-04-06 15:47:49,604 - DEBUG - Feature pipeline stdout: Successfully loaded 154 rows of historical data
+Next day's data added and saved to aspi_test_features.csv
+
+2025-04-06 15:47:49,604 - DEBUG - Starting adminpipeline2.py
+2025-04-06 15:47:49,604 - DEBUG - Command: python adminpipeline2.py 12000
+2025-04-06 15:48:04,140 - DEBUG - Admin pipeline completed with return code: 1
+2025-04-06 15:48:04,141 - DEBUG - Admin pipeline stdout: Predictions for the new test data:
+[12007.01388792 12108.62977625 12062.22780853 12106.42731964
+ 12258.37642476 12112.11199792 12066.49522661 11914.91744177
+ 11913.51350018 11751.9414879  11875.75349647 11671.30297639
+ 11666.8697825  11822.72921381 11517.76145357 11344.10601649
+ 11299.22023909 11130.65269385 10978.16751619 10995.75072018]
+
+2025-04-06 15:48:04,141 - ERROR - Admin pipeline stderr: Traceback (most recent call last):
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/requests/models.py", line 974, in json
+    return complexjson.loads(self.text, **kwargs)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/aspi/adminpipeline2.py", line 50, in <module>
+    print("Error updating predictions in the database:", update_response.json())
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/requests/models.py", line 978, in json
+    raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
+requests.exceptions.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+2025-04-06 15:48:04,141 - ERROR - Pipeline processing failed
+2025-04-06 15:48:04,142 - INFO - 127.0.0.1 - - [06/Apr/2025 15:48:04] "[35m[1mPOST /api/process_aspi HTTP/1.1[0m" 500 -
+2025-04-06 15:53:19,873 - INFO -  * Detected change in '/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/aspi/app.py', reloading
+2025-04-06 15:53:20,260 - INFO -  * Restarting with stat
+2025-04-06 15:53:35,055 - DEBUG - Environment variables loaded successfully
+2025-04-06 15:53:35,056 - DEBUG - Flask app initialized with CORS
+2025-04-06 15:53:35,056 - DEBUG - Connecting to MongoDB: test.daily_scores
+2025-04-06 15:53:35,230 - DEBUG - MongoDB connection established successfully
+2025-04-06 15:53:35,230 - INFO - Starting Flask app on port 5050
+2025-04-06 15:53:35,268 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5050
+2025-04-06 15:53:35,268 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-06 15:53:35,269 - INFO -  * Restarting with stat
+2025-04-06 15:53:35,520 - DEBUG - Environment variables loaded successfully
+2025-04-06 15:53:35,520 - DEBUG - Flask app initialized with CORS
+2025-04-06 15:53:35,520 - DEBUG - Connecting to MongoDB: test.daily_scores
+2025-04-06 15:53:35,541 - DEBUG - MongoDB connection established successfully
+2025-04-06 15:53:35,541 - INFO - Starting Flask app on port 5050
+2025-04-06 15:53:35,557 - WARNING -  * Debugger is active!
+2025-04-06 15:53:35,565 - INFO -  * Debugger PIN: 685-674-764
+2025-04-06 15:53:42,890 - INFO - 127.0.0.1 - - [06/Apr/2025 15:53:42] "OPTIONS /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 15:53:42,893 - INFO - ============================================================
+2025-04-06 15:53:42,893 - INFO - New request received at 2025-04-06 15:53:42.893568
+2025-04-06 15:53:42,913 - DEBUG - Request JSON: {'decimalValue': '12000'}
+2025-04-06 15:53:42,913 - INFO - Processing decimal value: 12000
+2025-04-06 15:53:43,930 - INFO - Retrieved weighted_score from DB: -0.2
+2025-04-06 15:53:43,931 - DEBUG - Running featureEngineeringPipeline: python featureEngineeringPipeline.py 12000 -0.2
+2025-04-06 15:53:44,600 - DEBUG - Feature pipeline stdout: Successfully loaded 155 rows of historical data
+Next day's data added and saved to aspi_test_features.csv
+
+2025-04-06 15:53:44,601 - DEBUG - Running adminpipeline2: python adminpipeline2.py 12000
+2025-04-06 15:53:48,063 - DEBUG - Admin pipeline stdout: Predictions for the new test data:
+[11994.72776986 12085.25754125 12028.88012347 12063.09510714
+ 12232.72333448 12081.75555458 11989.65375518 11832.80577802
+ 11894.8870678  11610.88593665 11861.39990813 11664.7002152
+ 11617.74437065 11663.0477306  11429.99675667 11303.14972655
+ 11223.86214058 11033.35148274 10891.12482744 10937.32498167]
+
+2025-04-06 15:53:48,063 - ERROR - Admin pipeline stderr: Traceback (most recent call last):
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/requests/models.py", line 974, in json
+    return complexjson.loads(self.text, **kwargs)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/aspi/adminpipeline2.py", line 50, in <module>
+    print("Error updating predictions in the database:", update_response.json())
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/.venv/lib/python3.9/site-packages/requests/models.py", line 978, in json
+    raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
+requests.exceptions.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+2025-04-06 15:53:48,064 - INFO - 127.0.0.1 - - [06/Apr/2025 15:53:48] "[35m[1mPOST /api/process_aspi HTTP/1.1[0m" 500 -
+2025-04-06 15:56:37,275 - INFO -  * Detected change in '/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/aspi/adminpipeline2.py', reloading
+2025-04-06 15:56:37,702 - INFO -  * Restarting with stat
+2025-04-06 15:56:38,152 - DEBUG - Environment variables loaded successfully
+2025-04-06 15:56:38,153 - DEBUG - Flask app initialized with CORS
+2025-04-06 15:56:38,153 - DEBUG - Connecting to MongoDB: test.daily_scores
+2025-04-06 15:56:38,343 - DEBUG - MongoDB connection established successfully
+2025-04-06 15:56:38,344 - INFO - Starting Flask app on port 5050
+2025-04-06 15:56:38,372 - WARNING -  * Debugger is active!
+2025-04-06 15:56:38,381 - INFO -  * Debugger PIN: 685-674-764
+2025-04-06 15:56:47,594 - INFO -  * Detected change in '/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/aspi/app.py', reloading
+2025-04-06 15:56:48,134 - INFO -  * Restarting with stat
+2025-04-06 15:56:48,467 - DEBUG - Environment variables loaded
+2025-04-06 15:56:48,468 - DEBUG - Flask app initialized with CORS
+2025-04-06 15:56:48,468 - DEBUG - Connecting to MongoDB: test.daily_scores
+2025-04-06 15:56:48,492 - DEBUG - MongoDB connection established successfully
+2025-04-06 15:56:48,493 - DEBUG - Starting Flask application
+2025-04-06 15:56:48,515 - WARNING -  * Debugger is active!
+2025-04-06 15:56:48,522 - INFO -  * Debugger PIN: 685-674-764
+2025-04-06 15:56:54,142 - INFO - 127.0.0.1 - - [06/Apr/2025 15:56:54] "OPTIONS /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 15:56:54,144 - DEBUG - 
+==================================================
+2025-04-06 15:56:54,144 - DEBUG - New request received at 2025-04-06 15:56:54.144320
+2025-04-06 15:56:54,144 - DEBUG - Headers: {'Host': '127.0.0.1:5050', 'Connection': 'keep-alive', 'Content-Length': '24', 'Sec-Ch-Ua-Platform': '"macOS"', 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'Sec-Ch-Ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:3000', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:3000/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8'}
+2025-04-06 15:56:54,144 - DEBUG - Request data: {'decimalValue': '12000'}
+2025-04-06 15:56:54,144 - DEBUG - Processing decimal value: 12000
+2025-04-06 15:56:55,204 - DEBUG - Retrieved weighted_score: -0.2
+2025-04-06 15:56:55,806 - DEBUG - Feature pipeline stdout: Successfully loaded 156 rows of historical data
+Next day's data added and saved to aspi_test_features.csv
+
+2025-04-06 15:56:58,638 - DEBUG - Admin pipeline stdout: Error fetching data
+
+2025-04-06 15:56:58,639 - INFO - 127.0.0.1 - - [06/Apr/2025 15:56:58] "POST /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 15:58:59,685 - INFO - 127.0.0.1 - - [06/Apr/2025 15:58:59] "OPTIONS /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 15:58:59,688 - DEBUG - 
+==================================================
+2025-04-06 15:58:59,689 - DEBUG - New request received at 2025-04-06 15:58:59.689115
+2025-04-06 15:58:59,689 - DEBUG - Headers: {'Host': '127.0.0.1:5050', 'Connection': 'keep-alive', 'Content-Length': '24', 'Sec-Ch-Ua-Platform': '"macOS"', 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'Sec-Ch-Ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:3000', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:3000/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8'}
+2025-04-06 15:58:59,689 - DEBUG - Request data: {'decimalValue': '12000'}
+2025-04-06 15:58:59,689 - DEBUG - Processing decimal value: 12000
+2025-04-06 15:58:59,835 - DEBUG - Retrieved weighted_score: -0.2
+2025-04-06 15:59:00,462 - DEBUG - Feature pipeline stdout: Successfully loaded 157 rows of historical data
+Next day's data added and saved to aspi_test_features.csv
+
+2025-04-06 15:59:03,189 - DEBUG - Admin pipeline stdout: Error fetching data
+
+2025-04-06 15:59:03,191 - INFO - 127.0.0.1 - - [06/Apr/2025 15:59:03] "POST /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 16:00:04,745 - INFO -  * Detected change in '/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/aspi/adminpipeline2.py', reloading
+2025-04-06 16:00:05,287 - INFO -  * Restarting with stat
+2025-04-06 16:00:05,726 - DEBUG - Environment variables loaded
+2025-04-06 16:00:05,727 - DEBUG - Flask app initialized with CORS
+2025-04-06 16:00:05,727 - DEBUG - Connecting to MongoDB: test.daily_scores
+2025-04-06 16:00:05,902 - DEBUG - MongoDB connection established successfully
+2025-04-06 16:00:05,903 - DEBUG - Starting Flask application
+2025-04-06 16:00:05,934 - WARNING -  * Debugger is active!
+2025-04-06 16:00:05,941 - INFO -  * Debugger PIN: 685-674-764
+2025-04-06 16:00:09,294 - INFO - 127.0.0.1 - - [06/Apr/2025 16:00:09] "OPTIONS /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 16:00:09,296 - DEBUG - 
+==================================================
+2025-04-06 16:00:09,296 - DEBUG - New request received at 2025-04-06 16:00:09.296606
+2025-04-06 16:00:09,296 - DEBUG - Headers: {'Host': '127.0.0.1:5050', 'Connection': 'keep-alive', 'Content-Length': '24', 'Sec-Ch-Ua-Platform': '"macOS"', 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'Sec-Ch-Ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:3000', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:3000/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8'}
+2025-04-06 16:00:09,296 - DEBUG - Request data: {'decimalValue': '12000'}
+2025-04-06 16:00:09,296 - DEBUG - Processing decimal value: 12000
+2025-04-06 16:00:10,293 - DEBUG - Retrieved weighted_score: -0.2
+2025-04-06 16:00:10,857 - DEBUG - Feature pipeline stdout: Successfully loaded 158 rows of historical data
+Next day's data added and saved to aspi_test_features.csv
+
+2025-04-06 16:00:15,875 - DEBUG - Admin pipeline stdout: 
+2025-04-06 16:00:15,875 - ERROR - Admin pipeline stderr: Traceback (most recent call last):
+  File "/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/aspi/adminpipeline2.py", line 37, in <module>
+    row["predicted"] = float(y_pred)
+TypeError: only length-1 arrays can be converted to Python scalars
+
+2025-04-06 16:00:15,876 - INFO - 127.0.0.1 - - [06/Apr/2025 16:00:15] "[35m[1mPOST /api/process_aspi HTTP/1.1[0m" 500 -
+2025-04-06 16:00:45,851 - INFO -  * Detected change in '/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/aspi/adminpipeline2.py', reloading
+2025-04-06 16:00:46,347 - INFO -  * Restarting with stat
+2025-04-06 16:00:47,661 - DEBUG - Environment variables loaded
+2025-04-06 16:00:47,662 - DEBUG - Flask app initialized with CORS
+2025-04-06 16:00:47,662 - DEBUG - Connecting to MongoDB: test.daily_scores
+2025-04-06 16:00:47,728 - DEBUG - MongoDB connection established successfully
+2025-04-06 16:00:47,730 - DEBUG - Starting Flask application
+2025-04-06 16:00:47,776 - WARNING -  * Debugger is active!
+2025-04-06 16:00:47,855 - INFO -  * Debugger PIN: 685-674-764
+2025-04-06 16:02:07,540 - INFO - 127.0.0.1 - - [06/Apr/2025 16:02:07] "OPTIONS /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 16:02:07,542 - DEBUG - 
+==================================================
+2025-04-06 16:02:07,542 - DEBUG - New request received at 2025-04-06 16:02:07.542242
+2025-04-06 16:02:07,542 - DEBUG - Headers: {'Host': '127.0.0.1:5050', 'Connection': 'keep-alive', 'Content-Length': '24', 'Sec-Ch-Ua-Platform': '"macOS"', 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'Sec-Ch-Ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:3000', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:3000/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8'}
+2025-04-06 16:02:07,543 - DEBUG - Request data: {'decimalValue': '12000'}
+2025-04-06 16:02:07,543 - DEBUG - Processing decimal value: 12000
+2025-04-06 16:02:08,649 - DEBUG - Retrieved weighted_score: -0.2
+2025-04-06 16:02:09,201 - DEBUG - Feature pipeline stdout: Successfully loaded 159 rows of historical data
+Next day's data added and saved to aspi_test_features.csv
+
+2025-04-06 16:02:11,732 - DEBUG - Admin pipeline stdout: Error fetching data
+
+2025-04-06 16:02:11,733 - INFO - 127.0.0.1 - - [06/Apr/2025 16:02:11] "POST /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 16:04:43,935 - INFO - 127.0.0.1 - - [06/Apr/2025 16:04:43] "OPTIONS /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 16:04:43,938 - DEBUG - 
+==================================================
+2025-04-06 16:04:43,939 - DEBUG - New request received at 2025-04-06 16:04:43.939197
+2025-04-06 16:04:43,939 - DEBUG - Headers: {'Host': '127.0.0.1:5050', 'Connection': 'keep-alive', 'Content-Length': '22', 'Sec-Ch-Ua-Platform': '"macOS"', 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'Sec-Ch-Ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:3000', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:3000/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8'}
+2025-04-06 16:04:43,940 - DEBUG - Request data: {'decimalValue': '767'}
+2025-04-06 16:04:43,940 - DEBUG - Processing decimal value: 767
+2025-04-06 16:04:44,067 - DEBUG - Retrieved weighted_score: -0.2
+2025-04-06 16:04:44,761 - DEBUG - Feature pipeline stdout: Successfully loaded 160 rows of historical data
+Next day's data added and saved to aspi_test_features.csv
+
+2025-04-06 16:04:47,321 - DEBUG - Admin pipeline stdout: Error fetching data
+
+2025-04-06 16:04:47,322 - INFO - 127.0.0.1 - - [06/Apr/2025 16:04:47] "POST /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 16:09:05,040 - INFO -  * Detected change in '/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/aspi/app.py', reloading
+2025-04-06 16:09:05,581 - INFO -  * Restarting with stat
+2025-04-06 16:09:06,147 - DEBUG - Environment variables loaded
+2025-04-06 16:09:06,148 - DEBUG - Flask app initialized with CORS
+2025-04-06 16:09:06,148 - DEBUG - Connecting to MongoDB: test.daily_scores
+2025-04-06 16:09:06,311 - DEBUG - MongoDB connection established successfully
+2025-04-06 16:09:06,312 - DEBUG - Starting Flask application
+2025-04-06 16:09:06,355 - WARNING -  * Debugger is active!
+2025-04-06 16:09:06,364 - INFO -  * Debugger PIN: 685-674-764
+2025-04-06 16:09:09,152 - INFO - 127.0.0.1 - - [06/Apr/2025 16:09:09] "OPTIONS /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 16:09:09,155 - DEBUG - 
+==================================================
+2025-04-06 16:09:09,155 - DEBUG - New request received at 2025-04-06 16:09:09.155544
+2025-04-06 16:09:13,722 - DEBUG - Prediction successfully saved to MongoDB
+2025-04-06 16:09:13,723 - INFO - 127.0.0.1 - - [06/Apr/2025 16:09:13] "POST /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 16:14:31,201 - INFO -  * Detected change in '/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/aspi/app.py', reloading
+2025-04-06 16:14:31,730 - INFO -  * Restarting with stat
+2025-04-06 16:14:32,270 - DEBUG - Environment variables loaded
+2025-04-06 16:14:32,272 - DEBUG - Flask app initialized with CORS
+2025-04-06 16:14:32,272 - DEBUG - Connecting to MongoDB: test
+2025-04-06 16:14:34,351 - DEBUG - MongoDB connection established successfully
+2025-04-06 16:14:34,354 - DEBUG - Starting Flask application
+2025-04-06 16:14:34,396 - WARNING -  * Debugger is active!
+2025-04-06 16:14:34,405 - INFO -  * Debugger PIN: 685-674-764
+2025-04-06 16:14:34,534 - INFO - 127.0.0.1 - - [06/Apr/2025 16:14:34] "OPTIONS /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 16:14:34,536 - DEBUG - 
+==================================================
+2025-04-06 16:14:34,536 - DEBUG - New request received at 2025-04-06 16:14:34.536258
+2025-04-06 16:14:37,918 - DEBUG - Prediction saved with ID: 67f25b15928aa3d98094a231
+2025-04-06 16:14:37,919 - INFO - 127.0.0.1 - - [06/Apr/2025 16:14:37] "POST /api/process_aspi HTTP/1.1" 200 -
+2025-04-06 18:32:57,133 - INFO -  * Detected change in '/Users/athukoralagekavishanvishwajith/Desktop/AIDS/Year2/DSGP/InvestHERE/Untitled/backend/aspi/app.py', reloading
+2025-04-06 18:32:57,605 - INFO -  * Restarting with stat
+2025-04-06 18:35:53,811 - INFO -  * Restarting with stat
+2025-04-06 18:36:07,940 - INFO -  * Restarting with stat
+2025-04-06 18:39:13,289 - INFO -  * Restarting with stat
+2025-04-06 18:39:44,237 - INFO -  * Restarting with stat
+2025-04-06 18:43:50,451 - INFO -  * Restarting with stat
+2025-04-06 18:48:26,950 - INFO -  * Restarting with stat
+2025-04-06 18:56:56,293 - INFO -  * Restarting with stat
+2025-04-06 18:59:54,844 - INFO -  * Restarting with stat
+2025-04-06 19:01:08,739 - INFO -  * Restarting with stat
+2025-04-06 19:01:17,874 - INFO -  * Restarting with stat
+2025-04-06 19:04:03,857 - INFO -  * Restarting with stat
+2025-04-06 19:12:31,054 - INFO -  * Restarting with stat
+2025-04-06 19:15:44,822 - INFO -  * Restarting with stat
