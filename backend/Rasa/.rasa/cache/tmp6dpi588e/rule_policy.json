@@ -1,0 +1,42 @@
+{
+  "lookup": {
+    "rules": {
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"thank_you\"}}]": "utter_thank_you",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"thank_you\"}}, {\"prev_action\": {\"action_name\": \"utter_thank_you\"}, \"user\": {\"intent\": \"thank_you\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"specific_date\": [1.0]}, \"user\": {\"intent\": \"analyze_aspi_specific_date\"}}]": "action_analyze_aspi_specific_date",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"specific_date\": [1.0]}, \"user\": {\"intent\": \"analyze_aspi_specific_date\"}}, {\"prev_action\": {\"action_name\": \"action_analyze_aspi_specific_date\"}, \"slots\": {\"specific_date\": [1.0]}, \"user\": {\"intent\": \"analyze_aspi_specific_date\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"company_symbol\": [1.0]}, \"user\": {\"intent\": \"analyze_company_stock\"}}]": "action_analyze_company_stock",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"company_symbol\": [1.0]}, \"user\": {\"intent\": \"analyze_company_stock\"}}, {\"prev_action\": {\"action_name\": \"action_analyze_company_stock\"}, \"slots\": {\"company_symbol\": [1.0]}, \"user\": {\"intent\": \"analyze_company_stock\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"who_are_you\"}}]": "utter_who_are_you",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"who_are_you\"}}, {\"prev_action\": {\"action_name\": \"utter_who_are_you\"}, \"user\": {\"intent\": \"who_are_you\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"analyze_aspi\"}}]": "action_analyze_aspi",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"analyze_aspi\"}}, {\"prev_action\": {\"action_name\": \"action_analyze_aspi\"}, \"user\": {\"intent\": \"analyze_aspi\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"how_are_you\"}}]": "utter_how_are_you",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"how_are_you\"}}, {\"prev_action\": {\"action_name\": \"utter_how_are_you\"}, \"user\": {\"intent\": \"how_are_you\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet\"}}]": "utter_greet",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet\"}}, {\"prev_action\": {\"action_name\": \"utter_greet\"}, \"user\": {\"intent\": \"greet\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"analyze_sentiment\"}}]": "action_analyze_sentiment",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"analyze_sentiment\"}}, {\"prev_action\": {\"action_name\": \"action_analyze_sentiment\"}, \"user\": {\"intent\": \"analyze_sentiment\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}]": "utter_goodbye",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}, {\"prev_action\": {\"action_name\": \"utter_goodbye\"}, \"user\": {\"intent\": \"goodbye\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"openai_chat\"}}]": "action_openai_chat",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"openai_chat\"}}, {\"prev_action\": {\"action_name\": \"action_openai_chat\"}, \"user\": {\"intent\": \"openai_chat\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nlu_fallback\"}}]": "action_fallback",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nlu_fallback\"}}, {\"prev_action\": {\"action_name\": \"action_fallback\"}, \"user\": {\"intent\": \"nlu_fallback\"}}]": "action_listen"
+    },
+    "rule_only_slots": [],
+    "rule_only_loops": [],
+    "rules_for_loop_unhappy_path": {},
+    "rules_not_in_stories": [
+      "predicting default action with intent back",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nlu_fallback\"}}, {\"prev_action\": {\"action_name\": \"action_fallback\"}, \"user\": {\"intent\": \"nlu_fallback\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}]",
+      "predicting default action with intent restart",
+      "predicting default action with intent session_start",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}, {\"prev_action\": {\"action_name\": \"utter_goodbye\"}, \"user\": {\"intent\": \"goodbye\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet\"}}, {\"prev_action\": {\"action_name\": \"utter_greet\"}, \"user\": {\"intent\": \"greet\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nlu_fallback\"}}]"
+    ]
+  }
+}
