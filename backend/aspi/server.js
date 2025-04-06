@@ -61,5 +61,44 @@ app.post("/insert-sample-data", async (req, res) => {
   }
 });
 
+app.post("/update-predictions", async (req, res) => {
+  try {
+    const updatedData = req.body; // Get the updated data from the request body
+
+    // Step 1: Fetch the last 20 documents
+    const last20Docs = await ASPIPrediction.find().sort({ Date: -1 }).limit(20); // Get the last 20 documents
+
+    // Step 2: Update the predicted values for the last 20 documents
+    for (let i = 0; i < last20Docs.length; i++) {
+      if (i < updatedData.length) {
+        last20Docs[i].Predicted_Day_1 = updatedData[i].predicted; // Update the predicted value
+        await last20Docs[i].save(); // Save the updated document
+      }
+    }
+
+    // Step 3: Update the actual value for the next day
+    const nextDayData = updatedData.find((item) => item.actual !== null); // Find the next day's actual value
+    if (nextDayData) {
+      const nextDayDoc = await ASPIPrediction.findOne({ Date: new Date(nextDayData.date) });
+      if (nextDayDoc) {
+        // If the document for the next day exists, update its actual value
+        nextDayDoc.Actual_Day_1 = nextDayData.actual;
+        await nextDayDoc.save();
+      } else {
+        // If the document for the next day does not exist, create a new one
+        await ASPIPrediction.create({
+          Date: new Date(nextDayData.date),
+          Predicted_Day_1: nextDayData.predicted || null,
+          Actual_Day_1: nextDayData.actual,
+        });
+      }
+    }
+
+    res.json({ message: "Predictions and actual values updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating predictions", error: error.message });
+  }
+});
+
 // Start the server
 app.listen(5050, () => console.log("Server running on http://localhost:5050"));
